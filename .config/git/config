@@ -1,0 +1,9 @@
+[user]
+	name = TarekSaeed0
+	email = naminode2020@gmail.com
+[core]
+	editor = nvim
+[init]
+	defaultBranch = main
+[credential]
+	helper = store
