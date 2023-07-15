@@ -63,4 +63,6 @@ export PATH="$PATH:${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
 
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
-neofetch
+if command -v neofetch &> /dev/null; then
+	neofetch
+fi
