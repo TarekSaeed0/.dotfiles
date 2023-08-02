@@ -48,7 +48,7 @@ PS1+="\[$(tput sc)\] \[$(tput rc)\]"
 PS1+="\[\e[0m\]"
 PS1+=" "
 
-alias ls="ls -lsh --color=auto"
+alias ls="ls -lshA --color=auto"
 alias rm="rm -i"
 cd() { builtin cd "$@" && ls; }
 
