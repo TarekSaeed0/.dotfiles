@@ -1,31 +1,18 @@
 [[ $- != *i* ]] && return
 
-prompt_current_working_directory() {
-	local maximum_length="$(($(tput cols) / 3))"
-
+_prompt_cwd() {
 	local path="$1"
-	local path_separator="/"
-	local path_components; IFS="$path_separator" read -ra path_components <<< "$path$path_separator"
+	local maximum_length="$(($(tput cols) / 4))"
 
-	local parent=""
-	local name="${path_components[-1]}"
+	local separator="/"
+	local ellipsis="…";
 
-	local s="…";
-	local length="$((${#s} + ${#path_separator} + ${#name}))"
-	for ((i = ${#path_components[@]} - 2; i >= 0; i--)); do
-		local path_component="${path_components[i]}"
-
-		length="$((length + ${#path_component} + ${#path_separator}))"
-		if ((length > maximum_length)); then
-			parent="\001$(tput sc)\002 \001$(tput rc)…\002$path_separator$parent"
-			break
-		fi
-
-		parent="$path_component$path_separator$parent"
-	done
-	if [[ "$name" == "" ]]; then
-		name="$parent";
-		parent=""
+	local parent="" name="$path"
+	if [[ $path =~ ^(.*$separator)([^$separator]+)$ ]]; then parent="${BASH_REMATCH[1]}" name="${BASH_REMATCH[2]}"; fi
+	if (( ${#path} > maximum_length )); then
+		parent="${parent:$((${#parent} + ${#ellipsis} + ${#separator} + ${#name} - maximum_length))}"
+		if [[ $parent =~ [^$separator]*$separator?(.*)$ ]]; then parent="${BASH_REMATCH[1]}"; fi
+		parent="$ellipsis$separator$parent"
 	fi
 
 	echo -e "$parent\001\e[1;38;2;205;214;244m\002$name"
@@ -42,7 +29,7 @@ PS1+="\[\e[1;38;2;137;180;250;48;2;24;24;37m\]"
 PS1+="\[$(tput sc)\] \[$(tput rc)\]"
 PS1+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
 PS1+="  \[$(tput sc)\] \[$(tput rc)\]"
-PS1+="  \$(prompt_current_working_directory \"\w\") "
+PS1+="  \$(_prompt_cwd \"\w\") "
 PS1+="\[\e[0;1;38;2;24;24;37m\]"
 PS1+="\[$(tput sc)\] \[$(tput rc)\]"
 PS1+="\[\e[0m\]"
@@ -52,8 +39,10 @@ alias ls="ls -lshA --color=auto"
 alias rm="rm -i"
 cd() { builtin cd "$@" && ls; }
 
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
+export HISTCONTROL="ignoredups"
+
+export CC="/usr/bin/clang"
+export CXX="/usr/bin/clang++"
 
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
 export NPM_CONFIG_INIT_MODULE="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npm-init.js"
