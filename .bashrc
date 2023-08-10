@@ -12,7 +12,7 @@ _prompt_cwd() {
 	if (( ${#path} > maximum_length )); then
 		parent="${parent:$((${#parent} + ${#ellipsis} + ${#separator} + ${#name} - maximum_length))}"
 		if [[ $parent =~ [^$separator]*$separator?(.*)$ ]]; then parent="${BASH_REMATCH[1]}"; fi
-		parent="$ellipsis$separator$parent"
+		parent="\001$(tput sc)\002 \001$(tput rc)$ellipsis\002$separator$parent"
 	fi
 
 	echo -e "$parent\001\e[1;38;2;205;214;244m\002$name"
@@ -44,15 +44,50 @@ export HISTCONTROL="ignoredups"
 export CC="/usr/bin/clang"
 export CXX="/usr/bin/clang++"
 
-export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
-export NPM_CONFIG_INIT_MODULE="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npm-init.js"
-export NPM_CONFIG_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/npm"
-export NPM_CONFIG_PREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/npm"
-export PATH="$PATH:${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/usr/$UID}"
 
-export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
-export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+export HISTFILE="$XDG_STATE_HOME/bash/history"
 
-alias dotfiles="/usr/bin/git --git-dir=\$HOME/.dotfiles/ --work-tree=\$HOME"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export NPM_CONFIG_INIT_MODULE="$XDG_CONFIG_HOME/npm/npm-init.js"
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
+export NPM_CONFIG_PREFIX="$XDG_DATA_HOME/npm"
+export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
 
-[[ $0 == -* ]] && neofetch
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+
+export MANPAGER="nvim +Man!"
+
+if command -v man &> /dev/null; then
+	alias man="man --config-file=\"\$XDG_CONFIG_HOME/man/config\""
+fi
+if command -v mandb &> /dev/null; then
+	alias mandb="mandb --config-file=\"\$XDG_CONFIG_HOME/man/config\""
+fi
+if command -v manpath &> /dev/null; then
+	alias manpath="manpath --config-file=\"\$XDG_CONFIG_HOME/man/config\""
+fi
+if command -v apropos &> /dev/null; then
+	alias apropos="apropos --config-file=\"\$XDG_CONFIG_HOME/man/config\""
+fi
+
+if command -v git &> /dev/null; then
+	if [ -d "$HOME/.dotfiles/" ]; then
+		if git -C "$HOME/.dotfiles/" rev-parse --is-inside-git-dir &> /dev/null; then
+			alias dotfiles="git --git-dir=\"\$HOME/.dotfiles/\" --work-tree=\"\$HOME\""
+		fi
+	else
+		git init --bare "$HOME/.dotfiles"
+		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" config status.showUntrackedFiles no
+		alias dotfiles="git --git-dir=\"\$HOME/.dotfiles/\" --work-tree=\"\$HOME\""
+	fi
+fi
+
+if command -v neofetch &> /dev/null && [[ $0 == -* ]]; then
+	neofetch
+fi
