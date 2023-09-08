@@ -84,6 +84,7 @@ if command -v git &> /dev/null; then
 	else
 		git init --bare "$HOME/.dotfiles"
 		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" config status.showUntrackedFiles no
+		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" remote add origin "https://github.com/TarekSaeed0/.dotfiles"
 		alias dotfiles="git --git-dir=\"\$HOME/.dotfiles/\" --work-tree=\"\$HOME\""
 	fi
 fi
