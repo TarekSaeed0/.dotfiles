@@ -62,7 +62,7 @@ PS1+=" "
 
 alias rm="rm -i"
 
-if [ -x /usr/bin/dircolors ]; then
+if command -v dircolors &> /dev/null; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 
     alias ls="ls -lsh --color=auto"
