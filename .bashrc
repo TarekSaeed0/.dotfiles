@@ -1,5 +1,25 @@
 [[ $- != *i* ]] && return
 
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/usr/$UID}"
+
+export HISTFILE="$XDG_STATE_HOME/bash/history"
+export HISTSIZE=10000
+export HISTCONTROL="ignoredups"
+
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export NPM_CONFIG_INIT_MODULE="$XDG_CONFIG_HOME/npm/npm-init.js"
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
+export NPM_CONFIG_PREFIX="$XDG_DATA_HOME/npm"
+export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
+
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+
+export MANPAGER="nvim +Man!"
+
 _prompt_cwd() {
 	local path="$1"
 	local maximum_length="$(($(tput cols) / 4))"
@@ -8,10 +28,15 @@ _prompt_cwd() {
 	local ellipsis="…";
 
 	local parent="" name="$path"
-	if [[ $path =~ ^(.*$separator)([^$separator]+)$ ]]; then parent="${BASH_REMATCH[1]}" name="${BASH_REMATCH[2]}"; fi
+	if [[ $path =~ ^(.*$separator)([^$separator]+)$ ]]; then
+		parent="${BASH_REMATCH[1]}"
+		name="${BASH_REMATCH[2]}"
+	fi
 	if (( ${#path} > maximum_length )); then
 		parent="${parent:$((${#parent} + ${#ellipsis} + ${#separator} + ${#name} - maximum_length))}"
-		if [[ $parent =~ [^$separator]*$separator?(.*)$ ]]; then parent="${BASH_REMATCH[1]}"; fi
+		if [[ $parent =~ [^$separator]*$separator?(.*)$ ]]; then
+			parent="${BASH_REMATCH[1]}"
+		fi
 		parent="\001$(tput sc)\002 \001$(tput rc)$ellipsis\002$separator$parent"
 	fi
 
@@ -35,46 +60,23 @@ PS1+="\[$(tput sc)\] \[$(tput rc)\]"
 PS1+="\[\e[0m\]"
 PS1+=" "
 
-alias ls="ls -lshA --color=auto"
 alias rm="rm -i"
+
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+
+    alias ls="ls -lsh --color=auto"
+    alias dir="dir --color=auto"
+    alias vdir="vdir --color=auto"
+
+    alias grep="grep --color=auto"
+    alias fgrep="fgrep --color=auto"
+    alias egrep="egrep --color=auto"
+else
+	alias ls="ls -lsh"
+fi
+
 cd() { builtin cd "$@" && ls; }
-
-export HISTCONTROL="ignoredups"
-
-export CC="/usr/bin/clang"
-export CXX="/usr/bin/clang++"
-
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/usr/$UID}"
-
-export HISTFILE="$XDG_STATE_HOME/bash/history"
-
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-export NPM_CONFIG_INIT_MODULE="$XDG_CONFIG_HOME/npm/npm-init.js"
-export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
-export NPM_CONFIG_PREFIX="$XDG_DATA_HOME/npm"
-export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
-
-export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
-export CARGO_HOME="$XDG_DATA_HOME/cargo"
-
-export MANPAGER="nvim +Man!"
-
-if command -v man &> /dev/null; then
-	alias man="man --config-file=\"\$XDG_CONFIG_HOME/man/config\""
-fi
-if command -v mandb &> /dev/null; then
-	alias mandb="mandb --config-file=\"\$XDG_CONFIG_HOME/man/config\""
-fi
-if command -v manpath &> /dev/null; then
-	alias manpath="manpath --config-file=\"\$XDG_CONFIG_HOME/man/config\""
-fi
-if command -v apropos &> /dev/null; then
-	alias apropos="apropos --config-file=\"\$XDG_CONFIG_HOME/man/config\""
-fi
 
 if command -v git &> /dev/null; then
 	if [ -d "$HOME/.dotfiles/" ]; then
@@ -89,6 +91,7 @@ if command -v git &> /dev/null; then
 	fi
 fi
 
-if command -v neofetch &> /dev/null && [[ $0 == -* ]]; then
+if command -v neofetch &> /dev/null && ([[ $0 == -* ]] || ! [ -v NEOFETCH_STARTUP ]); then
+	export NEOFETCH_STARTUP=""
 	neofetch
 fi
