@@ -71,6 +71,6 @@ if command -v git &> /dev/null; then
 	fi
 fi
 
-if command -v neofetch &> /dev/null; then
+if command -v neofetch &> /dev/null && [[ $0 == -* ]]; then
 	neofetch
 fi

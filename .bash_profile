@@ -18,4 +18,7 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 export MANPAGER="nvim +Man!"
 
+export CC="clang"
+export CXX="clang++"
+
 [[ -f ~/.bashrc ]] && . ~/.bashrc
