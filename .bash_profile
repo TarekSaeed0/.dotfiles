@@ -2,7 +2,7 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/usr/$UID}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$UID}"
 
 export HISTFILE="$XDG_STATE_HOME/bash/history"
 export HISTSIZE=10000
@@ -20,5 +20,10 @@ export MANPAGER="nvim +Man!"
 
 export CC="clang"
 export CXX="clang++"
+
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
+
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc

@@ -40,6 +40,8 @@ PS1+="\[$(tput sc)\] \[$(tput rc)\]"
 PS1+="\[\e[0m\]"
 PS1+=" "
 
+alias mv="mv -i"
+alias cp="cp -i"
 alias rm="rm -i"
 
 if command -v dircolors &> /dev/null; then
