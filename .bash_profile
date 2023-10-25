@@ -14,6 +14,7 @@ export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
 export NPM_CONFIG_PREFIX="$XDG_DATA_HOME/npm"
 export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
 
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 export MANPAGER="nvim +Man!"
