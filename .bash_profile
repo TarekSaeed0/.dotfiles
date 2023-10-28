@@ -27,4 +27,4 @@ export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 
-[[ -f ~/.bashrc ]] && . ~/.bashrc
+[[ -f "$HOME/.bashrc" ]] && . "$HOME/.bashrc"
