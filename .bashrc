@@ -81,6 +81,7 @@ if command -v git &> /dev/null; then
 	fi
 fi
 
-if command -v neofetch &> /dev/null && [[ $0 == -* ]]; then
-	neofetch
+if command -v neofetch &> /dev/null && ! [ -v NEOFETCH_STARTUP ]; then
+	export NEOFETCH_STARTUP=""
+	clear && neofetch
 fi
