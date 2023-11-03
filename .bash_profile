@@ -17,6 +17,8 @@ export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
+export PATH="$PATH:/usr/lib/jvm/default/bin"
+
 export MANPAGER="nvim +Man!"
 
 export CC="clang"

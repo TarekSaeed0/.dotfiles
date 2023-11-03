@@ -31,7 +31,7 @@ PS1+=" \[$(tput sc)\]  \[$(tput rc) \]"
 PS1+="\[\e[1m\]"
 PS1+="\u "
 PS1+="\[\e[1;38;2;137;180;250;48;2;24;24;37m\]"
-PS1+="\[$(tput sc)\] \[$(tput rc)\]"
+PS1+="\[$(tput sc)\] \[$(tput rc)\]"
 PS1+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
 PS1+=" \[$(tput sc)\]  \[$(tput rc) \]"
 PS1+=" \$(_prompt_cwd \"\w\") "
@@ -45,7 +45,7 @@ alias cp="cp -i"
 alias rm="rm -i"
 
 if command -v dircolors &> /dev/null; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
 
     alias ls="ls -lsh --color=auto"
     alias dir="dir --color=auto"
@@ -64,7 +64,7 @@ if command -v git &> /dev/null; then
 	if [ -d "$HOME/.dotfiles/" ]; then
 		if git -C "$HOME/.dotfiles/" rev-parse --is-inside-git-dir &> /dev/null; then
 			alias dotfiles="git --git-dir=\"\$HOME/.dotfiles/\" --work-tree=\"\$HOME\""
-			if [ -f /usr/share/bash-completion/bash_completion ]; then
+			if [ -r "/usr/share/bash-completion/bash_completion" ]; then
 				_completion_loader git
 				complete -o bashdefault -o default -o nospace -F __git_wrap__git_main dotfiles
 			fi
@@ -74,11 +74,15 @@ if command -v git &> /dev/null; then
 		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" config status.showUntrackedFiles no
 		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" remote add origin "https://github.com/TarekSaeed0/.dotfiles"
 		alias dotfiles="git --git-dir=\"\$HOME/.dotfiles/\" --work-tree=\"\$HOME\""
-		if [ -f /usr/share/bash-completion/bash_completion ]; then
+		if [ -r "/usr/share/bash-completion/bash_completion" ]; then
 			_completion_loader git
 			complete -o bashdefault -o default -o nospace -F __git_wrap__git_main dotfiles
 		fi
 	fi
+fi
+
+if [ -r "/usr/share/doc/pkgfile/command-not-found.bash" ]; then
+  . "/usr/share/doc/pkgfile/command-not-found.bash"
 fi
 
 if command -v neofetch &> /dev/null && ! [ -v NEOFETCH_STARTUP ]; then
