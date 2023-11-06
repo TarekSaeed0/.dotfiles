@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "${STARTUP:-true}" = "true" ]; then
+	if command -v neofetch &> /dev/null; then
+		clear && neofetch
+	fi
+	export STARTUP="false"
+fi
