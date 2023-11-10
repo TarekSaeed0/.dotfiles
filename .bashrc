@@ -1,9 +1,9 @@
 case $- in
     *i*) ;;
-      *) return;;
+    *) return;;
 esac
 
-for script in $XDG_CONFIG_HOME/bash/*; do
+for script in "$XDG_CONFIG_HOME"/bash/*; do
 	if [ -r "$script" ]; then
 		. "$script"
 	fi

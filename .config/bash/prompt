@@ -1,4 +1,17 @@
-#!/bin/bash
+if [ -f /etc/os-release ]; then
+    . "/etc/os-release"
+
+	color="8;5;255"
+	for id in $ID $ID_LIKE; do
+		case "$id" in
+			arch) color="4";;
+			debian) color="1";;
+		esac
+	done
+	color_fg="3$color"
+	color_bg="4$color"
+
+fi
 
 _prompt_cwd() {
 	local path="$1"
@@ -24,13 +37,13 @@ _prompt_cwd() {
 }
 
 PS1=""
-PS1+="\[\e[1;38;2;137;180;250m\]"
+PS1+="\[\e[1;${color_fg}m\]"
 PS1+="\[$(tput sc)\] \[$(tput rc)\]"
-PS1+="\[\e[0;38;2;24;24;37;48;2;137;180;250m\]"
+PS1+="\[\e[0;38;2;24;24;37;${color_bg}m\]"
 PS1+=" \[$(tput sc)\]  \[$(tput rc) \]"
 PS1+="\[\e[1m\]"
 PS1+="\u "
-PS1+="\[\e[1;38;2;137;180;250;48;2;24;24;37m\]"
+PS1+="\[\e[1;${color_fg};48;2;24;24;37m\]"
 PS1+="\[$(tput sc)\]  \[$(tput rc)\]"
 PS1+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
 PS1+=" \[$(tput sc)\]  \[$(tput rc) \]"
