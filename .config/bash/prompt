@@ -1,18 +1,3 @@
-if [ -f /etc/os-release ]; then
-    . "/etc/os-release"
-
-	color="8;5;255"
-	for id in $ID $ID_LIKE; do
-		case "$id" in
-			arch) color="4";;
-			debian) color="1";;
-		esac
-	done
-	color_fg="3$color"
-	color_bg="4$color"
-
-fi
-
 _prompt_cwd() {
 	local path="$1"
 	local maximum_length="$(($(tput cols) / 4))"
@@ -35,6 +20,20 @@ _prompt_cwd() {
 
 	echo -e "$parent\001\e[1;38;2;205;214;244m\002$name"
 }
+
+color="8;5;255"
+if [ -f /etc/os-release ]; then
+    . "/etc/os-release"
+
+	for id in $ID $ID_LIKE; do
+		case "$id" in
+			arch) color="4";;
+			debian) color="1";;
+		esac
+	done
+fi
+color_fg="3$color"
+color_bg="4$color"
 
 PS1=""
 PS1+="\[\e[1;${color_fg}m\]"
