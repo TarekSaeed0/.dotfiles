@@ -26,7 +26,7 @@
       <property name="Active" type="bool" value="true"/>
       <property name="EDID" type="string" value=""/>
       <property name="Resolution" type="string" value="720x1506"/>
-      <property name="RefreshRate" type="double" value="29.835448725148826"/>
+      <property name="RefreshRate" type="double" value="59.893563394629339"/>
       <property name="Rotation" type="int" value="0"/>
       <property name="Reflection" type="string" value="0"/>
       <property name="Primary" type="bool" value="false"/>
