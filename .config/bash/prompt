@@ -1,11 +1,70 @@
-_prompt_cwd() {
+color="8;5;255"
+if [ -f /etc/os-release ]; then
+    . "/etc/os-release"
+
+	for id in $ID $ID_LIKE; do
+		case "$id" in
+			arch) color="4";;
+			debian) color="1";;
+		esac
+	done
+fi
+color_fg="3$color"
+color_bg="4$color"
+
+PS0="\$(__prompt_timer_start \$ROOTPID)"
+
+PROMPT_COMMAND="__prompt_command"
+__prompt_command() {
+	local exit="$?"
+	local timer
+	timer="$(__prompt_timer_end)"
+
+	PS1L=""
+	PS1L+="\[\e[1;${color_fg}m\]"
+	PS1L+=" \[\e[1D\]"
+	PS1L+="\[\e[0;38;2;24;24;37;${color_bg}m\]"
+	PS1L+="  \[\e[1D\] "
+	PS1L+="\[\e[1m\]"
+	PS1L+="\u "
+	PS1L+="\[\e[1;${color_fg};48;2;24;24;37m\]"
+	PS1L+="  \[\e[2D\]"
+	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
+	PS1L+="  \[\e[1D\] "
+	PS1L+=" \$(__prompt_cwd \"\w\") "
+	PS1L+="\[\e[0;1;38;2;24;24;37m\]"
+	PS1L+=" \[\e[1D\]"
+	PS1L+="\[\e[0m\]"
+	PS1L+=" "
+
+	PS1R=""
+	PS1R+="\[\e[1;38;2;24;24;37m\]"
+	PS1R+=" \[\e[1D\]"
+	PS1R+="\[\e[48;2;24;24;37m\] "
+	if [ "$exit" != 0 ]; then
+		PS1R+="\[\e[1;31m\]$exit   \[\e[2D \]"
+	fi
+	PS1R+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
+	PS1R+="${timer}s"
+	PS1R+="  \[\e[1D\]"
+	PS1R+=" \[\e[0;1;38;2;24;24;37m\]"
+	PS1R+=" \[\e[1D\]"
+	PS1R+="\[\e[0m\]"
+
+	PS1R_stripped="$(sed "s,\\\\\[[^]]*\],,g" <<< "$PS1R")"
+
+	PS1="\[$(tput sc)\]\[\e[$(tput cols)C\e[${#PS1R_stripped}D\]$PS1R\[$(tput rc)\]$PS1L"
+}
+
+__prompt_cwd() {
 	local path="$1"
 	local maximum_length="$(($(tput cols) / 4))"
 
 	local separator="/"
 	local ellipsis="…";
 
-	local parent="" name="$path"
+	local parent=""
+	local name="$path"
 	if [[ $path =~ ^(.*$separator)([^$separator]+)$ ]]; then
 		parent="${BASH_REMATCH[1]}"
 		name="${BASH_REMATCH[2]}"
@@ -21,33 +80,18 @@ _prompt_cwd() {
 	echo -e "$parent\001\e[1;38;2;205;214;244m\002$name"
 }
 
-color="8;5;255"
-if [ -f /etc/os-release ]; then
-    . "/etc/os-release"
+__prompt_timer_id="$USER.$BASHPID"
+__prompt_timer_start() {
+	date +%s.%N > "/dev/shm/$__prompt_timer_id.__prompt_timer"
+}
+__prompt_timer_end() {
+	local start end
+	start="$(cat "/dev/shm/$__prompt_timer_id.__prompt_timer")"
+	end="$(date +%s.%N)"
+	echo "scale=2; ($end - $start) / 1" | bc
+}
+__prompt_timer_start
 
-	for id in $ID $ID_LIKE; do
-		case "$id" in
-			arch) color="4";;
-			debian) color="1";;
-		esac
-	done
-fi
-color_fg="3$color"
-color_bg="4$color"
-
-PS1=""
-PS1+="\[\e[1;${color_fg}m\]"
-PS1+="\[$(tput sc)\] \[$(tput rc)\]"
-PS1+="\[\e[0;38;2;24;24;37;${color_bg}m\]"
-PS1+=" \[$(tput sc)\]  \[$(tput rc) \]"
-PS1+="\[\e[1m\]"
-PS1+="\u "
-PS1+="\[\e[1;${color_fg};48;2;24;24;37m\]"
-PS1+="\[$(tput sc)\]  \[$(tput rc)\]"
-PS1+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
-PS1+=" \[$(tput sc)\]  \[$(tput rc) \]"
-PS1+=" \$(_prompt_cwd \"\w\") "
-PS1+="\[\e[0;1;38;2;24;24;37m\]"
-PS1+="\[$(tput sc)\] \[$(tput rc)\]"
-PS1+="\[\e[0m\]"
-PS1+=" "
+#s="x\[y\]ab\[c\]"
+#echo "$s"
+#echo "${s//\[[^\]]*\]/z}"
