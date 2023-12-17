@@ -51,7 +51,7 @@ __prompt_command() {
 	PS1R+=" \[\e[1D\]"
 	PS1R+="\[\e[0m\]"
 
-	PS1R_stripped="$(sed "s,\\\\\[[^]]*\],,g" <<< "$PS1R")"
+	PS1R_stripped="${PS1R//\\\[*([^\]])\\\]/}"
 
 	PS1="\[$(tput sc)\]\[\e[$(tput cols)C\e[${#PS1R_stripped}D\]$PS1R\[$(tput rc)\]$PS1L"
 }
@@ -91,7 +91,3 @@ __prompt_timer_end() {
 	echo "scale=2; ($end - $start) / 1" | bc
 }
 __prompt_timer_start
-
-#s="x\[y\]ab\[c\]"
-#echo "$s"
-#echo "${s//\[[^\]]*\]/z}"
