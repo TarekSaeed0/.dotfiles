@@ -30,7 +30,23 @@ __prompt_command() {
 	PS1L+="\[\e[1;${color_fg};48;2;24;24;37m\]"
 	PS1L+="  \[\e[2D\]"
 	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
-	PS1L+="  \[\e[1D\] "
+	PS1L+="  \[\e[1D"
+	if [ -f "$XDG_CONFIG_HOME/user-dirs.dirs" ]; then
+		. "$XDG_CONFIG_HOME/user-dirs.dirs"
+	fi
+	case "$PWD" in
+		"$HOME") PS1L+="";;
+		"$XDG_DESKTOP_DIR") PS1L+="";;
+		"$XDG_DOCUMENTS_DIR") PS1L+="󰈙";;
+		"$XDG_DOWNLOAD_DIR") PS1L+="󰇚";;
+		"$XDG_MUSIC_DIR") PS1L+="";;
+		"$XDG_PICTURES_DIR") PS1L+="";;
+		"$XDG_PUBLICSHARE_DIR") PS1L+="";;
+		"$XDG_TEMPLATES_DIR") PS1L+="";;
+		"$XDG_VIDEOS_DIR") PS1L+="󰕧";;
+		*) PS1L+="";;
+	esac
+	PS1L+="\] "
 	PS1L+=" \$(__prompt_cwd \"\w\") "
 	PS1L+="\[\e[0;1;38;2;24;24;37m\]"
 	PS1L+=" \[\e[1D\]"
@@ -47,7 +63,25 @@ __prompt_command() {
 		fi
 		if [ -n "$timer" ]; then
 			PS1R+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
-			PS1R+="${timer}s"
+
+			local hours
+			hours="$(echo "scale=0; $timer / 3600" | bc)"
+			if [ "$hours" != 0 ]; then
+				PS1R+="${hours}h "
+			fi
+
+			local minutes
+			minutes="$(echo "scale=0; $timer / 60 % 60" | bc)"
+			if [ "$minutes" != 0 ]; then
+				PS1R+="${minutes}m "
+			fi
+
+			local seconds
+			seconds="$(echo "$timer % 60" | bc)"
+			if [ "$seconds" != 0 ]; then
+				PS1R+="${seconds}s "
+			fi
+
 			PS1R+="  \[\e[1D\] "
 		fi
 		PS1R+="\[\e[0;1;38;2;24;24;37m\]"
