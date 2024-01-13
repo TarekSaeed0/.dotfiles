@@ -1,16 +1,4 @@
-color="8;5;255"
-if [ -f /etc/os-release ]; then
-    . "/etc/os-release"
-
-	for id in $ID $ID_LIKE; do
-		case "$id" in
-			arch) color="4";;
-			debian) color="1";;
-		esac
-	done
-fi
-color_fg="3$color"
-color_bg="4$color"
+eval "$(dircolors -b <(echo "DIR 1;38;2;203;166;247"))"
 
 PS0="\$(__prompt_timer_start \$ROOTPID)"
 
@@ -21,13 +9,13 @@ __prompt_command() {
 	timer="$(__prompt_timer_end)"
 
 	PS1L=""
-	PS1L+="\[\e[1;${color_fg}m\]"
+	PS1L+="\[\e[1;38;2;203;166;247m\]"
 	PS1L+=" \[\e[1D\]"
-	PS1L+="\[\e[0;38;2;24;24;37;${color_bg}m\]"
+	PS1L+="\[\e[0;38;2;24;24;37;48;2;203;166;247m\]"
 	PS1L+="  \[\e[1D\] "
 	PS1L+="\[\e[1m\]"
 	PS1L+="\u "
-	PS1L+="\[\e[1;${color_fg};48;2;24;24;37m\]"
+	PS1L+="\[\e[1;38;2;203;166;247;48;2;24;24;37m\]"
 	PS1L+="  \[\e[2D\]"
 	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
 	PS1L+="  \[\e[1D"
@@ -37,7 +25,7 @@ __prompt_command() {
 	case "$PWD" in
 		"$HOME") PS1L+="";;
 		"$XDG_DESKTOP_DIR") PS1L+="";;
-		"$XDG_DOCUMENTS_DIR") PS1L+="󰈙";;
+"$XDG_DOCUMENTS_DIR") PS1L+="󰈙";;
 		"$XDG_DOWNLOAD_DIR") PS1L+="󰇚";;
 		"$XDG_MUSIC_DIR") PS1L+="";;
 		"$XDG_PICTURES_DIR") PS1L+="";;
@@ -116,7 +104,7 @@ __prompt_cwd() {
 		parent="\001$(tput sc)\002 \001$(tput rc)$ellipsis\002$separator$parent"
 	fi
 
-	echo -e "$parent\001\e[1;38;2;205;214;244m\002$name"
+	echo -e "$parent\001\e[0;1;48;2;24;24;37m\002$name"
 }
 
 __prompt_timer_id="$USER.$BASHPID"
