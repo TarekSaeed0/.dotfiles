@@ -3,6 +3,12 @@ case $- in
     *) return;;
 esac
 
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+	exec tmux &> /dev/null
+else
+	clear
+fi
+
 for script in "$XDG_CONFIG_HOME/bash/"*; do
 	if [ -r "$script" ]; then
 		. "$script"

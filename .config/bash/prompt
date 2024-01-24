@@ -11,11 +11,11 @@ __prompt_command() {
 	PS1L=""
 	PS1L+="\[\e[1;38;2;203;166;247m\]"
 	PS1L+=" \[\e[1D\]"
-	PS1L+="\[\e[0;38;2;24;24;37;48;2;203;166;247m\]"
+	PS1L+="\[\e[38;2;24;24;37;48;2;203;166;247m\]"
 	PS1L+="  \[\e[1D\] "
 	PS1L+="\[\e[1m\]"
 	PS1L+="\u "
-	PS1L+="\[\e[1;38;2;203;166;247;48;2;24;24;37m\]"
+	PS1L+="\[\e[38;2;203;166;247;48;2;24;24;37m\]"
 	PS1L+="  \[\e[2D\]"
 	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
 	PS1L+="  \[\e[1D"
@@ -25,7 +25,7 @@ __prompt_command() {
 	case "$PWD" in
 		"$HOME") PS1L+="";;
 		"$XDG_DESKTOP_DIR") PS1L+="";;
-"$XDG_DOCUMENTS_DIR") PS1L+="󰈙";;
+		"$XDG_DOCUMENTS_DIR") PS1L+="󰈙";;
 		"$XDG_DOWNLOAD_DIR") PS1L+="󰇚";;
 		"$XDG_MUSIC_DIR") PS1L+="";;
 		"$XDG_PICTURES_DIR") PS1L+="";;
@@ -117,7 +117,8 @@ __prompt_timer_end() {
 		start="$(cat "/dev/shm/$__prompt_timer_id.__prompt_timer")"
 		end="$(date +%s.%N)"
 		echo "scale=2; ($end - $start) / 1" | bc
-		rm -f "/dev/shm/$__prompt_timer_id.__prompt_timer"
+		command rm "/dev/shm/$__prompt_timer_id.__prompt_timer"
 	fi
 }
 __prompt_timer_start
+trap "command rm \"/dev/shm/\$__prompt_timer_id.__prompt_timer\"" EXIT
