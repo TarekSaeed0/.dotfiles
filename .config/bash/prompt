@@ -109,16 +109,16 @@ __prompt_cwd() {
 
 __prompt_timer_id="$USER.$BASHPID"
 __prompt_timer_start() {
-	date +%s.%N > "/dev/shm/$__prompt_timer_id.__prompt_timer"
+	date +%s.%N > "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer"
 }
 __prompt_timer_end() {
 	local start end
-	if [ -f "/dev/shm/$__prompt_timer_id.__prompt_timer" ]; then
-		start="$(cat "/dev/shm/$__prompt_timer_id.__prompt_timer")"
+	if [ -f "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer" ]; then
+		start="$(cat "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer")"
 		end="$(date +%s.%N)"
 		echo "scale=2; ($end - $start) / 1" | bc
-		command rm "/dev/shm/$__prompt_timer_id.__prompt_timer"
+		command rm "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer" &> /dev/null
 	fi
 }
 __prompt_timer_start
-trap "command rm \"/dev/shm/\$__prompt_timer_id.__prompt_timer\"" EXIT
+trap "command rm \"\${TMPDIR:-/tmp}/\$__prompt_timer_id.__prompt_timer\" &> /dev/null" EXIT

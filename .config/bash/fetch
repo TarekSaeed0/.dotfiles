@@ -1,6 +1,16 @@
-if [ "${STARTUP:-true}" = true ]; then
-	if command -v neofetch &> /dev/null; then
+: '''
+if command -v neofetch &> /dev/null; then
+	if ! [ -v DISABLE_FETCH ]; then
+		export DISABLE_FETCH=
 		neofetch
 	fi
-	export STARTUP=false
 fi
+'''
+: '''
+__fetch_id="$USER"
+if ! [ -f "${TMPDIR:-/tmp}/$__fetch_id.fetch" ]; then
+	touch "${TMPDIR:-/tmp}/$__fetch_id.fetch"
+	neofetch
+fi
+trap "command rm \"\${TMPDIR:-/tmp}/\$__fetch_id.fetch\" &> /dev/null" EXIT
+'''
