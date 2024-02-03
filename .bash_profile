@@ -53,6 +53,8 @@ if command -v gpg &> /dev/null; then
 	export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 fi
 
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+
 if [ -d "$HOME/.local/bin" ]; then
     PATH="$HOME/.local/bin:$PATH"
 fi

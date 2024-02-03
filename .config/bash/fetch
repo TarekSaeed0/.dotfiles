@@ -1,11 +1,10 @@
-: '''
 if command -v neofetch &> /dev/null; then
 	if ! [ -v DISABLE_FETCH ]; then
 		export DISABLE_FETCH=
 		neofetch
 	fi
 fi
-'''
+
 : '''
 __fetch_id="$USER"
 if ! [ -f "${TMPDIR:-/tmp}/$__fetch_id.fetch" ]; then
