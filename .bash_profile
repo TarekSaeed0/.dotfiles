@@ -38,15 +38,19 @@ if command -v cargo &> /dev/null; then
 	export CARGO_HOME="$XDG_DATA_HOME/cargo"
 fi
 
-if command -v xauth &> /dev/null; then
-	export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
-fi
 if command -v iceauth &> /dev/null; then
 	export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 fi
 
 if command -v gpg &> /dev/null; then
 	export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+fi
+
+if command -v adb &> /dev/null; then
+	if ! [ -d "$XDG_DATA_HOME/android" ]; then
+		mkdir -p "$XDG_DATA_HOME/android"
+	fi
+	alias adb="HOME=\"\$XDG_DATA_HOME/android\" adb"
 fi
 
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"

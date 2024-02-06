@@ -9,8 +9,6 @@ esac
 
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
 	exec tmux &> /dev/null
-else
-	clear
 fi
 
 # prompt
@@ -156,9 +154,9 @@ trap "command rm \"\${TMPDIR:-/tmp}/\$__prompt_timer_id.__prompt_timer\" &> /dev
 __fetch_id="$USER"
 if ! [ -f "${TMPDIR:-/tmp}/$__fetch_id.fetch" ]; then
 	touch "${TMPDIR:-/tmp}/$__fetch_id.fetch"
+	trap "command rm \"\${TMPDIR:-/tmp}/\$__fetch_id.fetch\" &> /dev/null" EXIT
 	neofetch
 fi
-trap "command rm \"\${TMPDIR:-/tmp}/\$__fetch_id.fetch\" &> /dev/null" EXIT
 
 # aliases
 
@@ -171,13 +169,13 @@ alias rm="rm -i"
 # set directory colors if possible and enable colors for some commands
 
 if command -v dircolors &> /dev/null; then
-	eval "$(dircolors -b <(echo "DIR 1;38;2;203;166;247"))"
-
     if [ -r "$HOME/.dircolors" ]; then
 		eval "$(dircolors -b "$HOME/.dircolors")"
 	else
 		eval "$(dircolors -b)"
 	fi
+
+	eval "$(dircolors -b <(echo "DIR 1;38;2;203;166;247"))"
 
 	function ls() { command ls -lsh --color "$@" | tail -n +2; }
     alias dir="dir --color=auto"
@@ -215,6 +213,8 @@ if command -v git &> /dev/null; then
 			complete -o bashdefault -o default -o nospace -F __git_wrap__git_main dotfiles
 		fi
 	fi
+
+	unset -v ENABLE_DOTFILES
 fi
 
 # source command not found if installed
