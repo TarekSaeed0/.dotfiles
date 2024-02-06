@@ -38,10 +38,6 @@ if command -v cargo &> /dev/null; then
 	export CARGO_HOME="$XDG_DATA_HOME/cargo"
 fi
 
-if [ -d "/usr/lib/jvm/default/bin" ]; then
-	export PATH="$PATH:/usr/lib/jvm/default/bin"
-fi
-
 if command -v xauth &> /dev/null; then
 	export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 fi
