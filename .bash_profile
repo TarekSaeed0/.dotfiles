@@ -40,6 +40,7 @@ if command -v rustup &> /dev/null; then
 fi
 if command -v cargo &> /dev/null; then
 	export CARGO_HOME="$XDG_DATA_HOME/cargo"
+	export PATH="$PATH:$CARGO_HOME/bin"
 fi
 
 if command -v iceauth &> /dev/null; then
