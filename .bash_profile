@@ -1,3 +1,7 @@
+if [ -d "$HOME/.local/bin" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
@@ -53,10 +57,12 @@ if command -v adb &> /dev/null; then
 	alias adb="HOME=\"\$XDG_DATA_HOME/android\" adb"
 fi
 
-export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+if command -v wine &> /dev/null || command -v wine64 &> /dev/null; then
+	export WINEPREFIX="$XDG_DATA_HOME/wine/prefixes/default"
+fi
 
-if [ -d "$HOME/.local/bin" ]; then
-    PATH="$HOME/.local/bin:$PATH"
+if command -v wgets &> /dev/null; then
+	alias wget="wget --hsts-file=\"\$XDG_DATA_HOME/wget-hsts\""
 fi
 
 if [ -r "$HOME/.bashrc" ]; then

@@ -37,13 +37,13 @@ __prompt_command() {
 	fi
 	case "$PWD" in
 		"$HOME") PS1L+="";;
-		"$XDG_DESKTOP_DIR") PS1L+="";;
-		"$XDG_DOCUMENTS_DIR") PS1L+="󰈙";;
+		"$XDG_DESKTOP_DIR") PS1L+="󰍹";;
 		"$XDG_DOWNLOAD_DIR") PS1L+="󰇚";;
+		"$XDG_TEMPLATES_DIR") PS1L+="";;
+		"$XDG_PUBLICSHARE_DIR") PS1L+="";;
+		"$XDG_DOCUMENTS_DIR") PS1L+="󰈙";;
 		"$XDG_MUSIC_DIR") PS1L+="";;
 		"$XDG_PICTURES_DIR") PS1L+="";;
-		"$XDG_PUBLICSHARE_DIR") PS1L+="";;
-		"$XDG_TEMPLATES_DIR") PS1L+="";;
 		"$XDG_VIDEOS_DIR") PS1L+="󰕧";;
 		*) PS1L+="";;
 	esac
@@ -68,21 +68,21 @@ __prompt_command() {
 			local is_empty=true
 
 			local hours
-			hours="$(echo "scale=0; $timer / 3600" | bc)"
+			hours="$(awk -v timer="$timer" "BEGIN { print int(timer / 3600) }")"
 			if [ "$hours" != 0 ]; then
 				PS1R+="${hours}h "
 				is_empty=false
 			fi
 
 			local minutes
-			minutes="$(echo "scale=0; $timer / 60 % 60" | bc)"
+			minutes="$(awk -v timer="$timer" "BEGIN { print int(timer / 60 % 60) }")"
 			if [ "$minutes" != 0 ]; then
 				PS1R+="${minutes}m "
 				is_empty=false
 			fi
 
 			local seconds
-			seconds="$(echo "$timer % 60" | bc)"
+			seconds="$(awk -v timer="$timer" "BEGIN { print timer % 60 }")"
 			if [ "$seconds" != 0 ]; then
 				PS1R+="${seconds}s "
 				is_empty=false
@@ -138,11 +138,11 @@ __prompt_timer_start() {
 	date +%s.%N > "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer"
 }
 __prompt_timer_end() {
-	local start end
 	if [ -f "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer" ]; then
-		start="$(cat "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer")"
-		end="$(date +%s.%N)"
-		echo "scale=2; ($end - $start) / 1" | bc
+		awk \
+			-v start="$(cat "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer")"\
+			-v end="$(date +%s.%N)"\
+			"BEGIN { printf(\"%.2f\", end - start) }"
 		command rm "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer" &> /dev/null
 	fi
 }
