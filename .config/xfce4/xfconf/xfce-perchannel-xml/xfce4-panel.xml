@@ -84,8 +84,8 @@
     <property name="plugin-12" type="string" value="clock">
       <property name="digital-date-format" type="string" value="%d/%m/%Y"/>
       <property name="digital-time-format" type="string" value="%I:%M %p"/>
-      <property name="digital-date-font" type="string" value="FiraCode Nerd Font Medium 10"/>
-      <property name="digital-time-font" type="string" value="FiraCode Nerd Font Medium 10"/>
+      <property name="digital-date-font" type="string" value="FiraCode Nerd Font Medium 9"/>
+      <property name="digital-time-font" type="string" value="FiraCode Nerd Font Medium 9"/>
     </property>
     <property name="plugin-13" type="string" value="separator">
       <property name="style" type="uint" value="0"/>
