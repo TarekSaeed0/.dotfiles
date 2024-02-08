@@ -24,13 +24,16 @@ __prompt_command() {
 	PS1L=""
 	PS1L+="\[\e[1;38;2;203;166;247m\]"
 	PS1L+=" \[\e[1D\]"
+
 	PS1L+="\[\e[38;2;24;24;37;48;2;203;166;247m\]"
 	PS1L+="  \[\e[1D\] "
 	PS1L+="\[\e[1m\]"
 	PS1L+="\u "
+
 	PS1L+="\[\e[38;2;203;166;247;48;2;24;24;37m\]"
 	PS1L+="  \[\e[2D\]"
 	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
+
 	PS1L+="  \[\e[1D"
 	if [ -f "$XDG_CONFIG_HOME/user-dirs.dirs" ]; then
 		. "$XDG_CONFIG_HOME/user-dirs.dirs"
@@ -49,51 +52,50 @@ __prompt_command() {
 	esac
 	PS1L+="\] "
 	PS1L+=" \$(__prompt_cwd \"\w\") "
+
 	PS1L+="\[\e[0;1;38;2;24;24;37m\]"
 	PS1L+=" \[\e[1D\]"
 	PS1L+="\[\e[0m\]"
 	PS1L+=" "
 
 	PS1R=""
-	if [ "$exit" != 0 ] || [ -n "$timer" ]; then
+
+	if [ "$exit" != 0 ]; then
+		PS1R+="\[\e[1;31m\]$exit   \[\e[2D \]"
+	fi
+
+	if [ -n "$timer" ]; then
+		PS1R+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
+
+		local hours
+		hours="$(awk -v timer="$timer" "BEGIN { print int(timer / 3600) }")"
+		if [ "$hours" != 0 ]; then
+			PS1R+="${hours}h "
+		fi
+
+		local minutes
+		minutes="$(awk -v timer="$timer" "BEGIN { print int(timer / 60 % 60) }")"
+		if [ "$minutes" != 0 ]; then
+			PS1R+="${minutes}m "
+		fi
+
+		local seconds
+		seconds="$(awk -v timer="$timer" "BEGIN { print timer % 60 }")"
+		PS1R+="${seconds}s "
+
+		PS1R+="  \[\e[1D\] "
+	fi
+
+	if [ -n "${PS1R// /}" ]; then
+		PS1R_="$PS1R"
+		PS1R=""
+
 		PS1R+="\[\e[1;38;2;24;24;37m\]"
 		PS1R+=" \[\e[1D\]"
 		PS1R+="\[\e[48;2;24;24;37m\] "
-		if [ "$exit" != 0 ]; then
-			PS1R+="\[\e[1;31m\]$exit   \[\e[2D \]"
-		fi
-		if [ -n "$timer" ]; then
-			PS1R+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
 
-			local is_empty=true
+		PS1R+="$PS1R_"
 
-			local hours
-			hours="$(awk -v timer="$timer" "BEGIN { print int(timer / 3600) }")"
-			if [ "$hours" != 0 ]; then
-				PS1R+="${hours}h "
-				is_empty=false
-			fi
-
-			local minutes
-			minutes="$(awk -v timer="$timer" "BEGIN { print int(timer / 60 % 60) }")"
-			if [ "$minutes" != 0 ]; then
-				PS1R+="${minutes}m "
-				is_empty=false
-			fi
-
-			local seconds
-			seconds="$(awk -v timer="$timer" "BEGIN { print timer % 60 }")"
-			if [ "$seconds" != 0 ]; then
-				PS1R+="${seconds}s "
-				is_empty=false
-			fi
-
-			if [ "$is_empty" = true ]; then
-				PS1R+="0s "
-			fi
-
-			PS1R+="  \[\e[1D\] "
-		fi
 		PS1R+="\[\e[0;1;38;2;24;24;37m\]"
 		PS1R+=" \[\e[1D\]"
 		PS1R+="\[\e[0m\]"
