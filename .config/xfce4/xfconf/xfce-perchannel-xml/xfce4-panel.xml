@@ -127,6 +127,7 @@
     <property name="plugin-24" type="string" value="whiskermenu">
       <property name="menu-opacity" type="int" value="0"/>
       <property name="recent" type="array">
+        <value type="string" value="btop.desktop"/>
         <value type="string" value="xfce-display-settings.desktop"/>
       </property>
       <property name="show-command-logoutuser" type="bool" value="false"/>
