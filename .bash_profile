@@ -59,6 +59,9 @@ if command -v adb &> /dev/null; then
 fi
 
 if command -v wine &> /dev/null || command -v wine64 &> /dev/null; then
+	if [ ! -d "$XDG_DATA_HOME/wine/prefixes" ]; then
+		mkdir -p "$XDG_DATA_HOME/wine/prefixes"
+	fi
 	export WINEPREFIX="$XDG_DATA_HOME/wine/prefixes/default"
 fi
 
