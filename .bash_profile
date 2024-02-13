@@ -69,6 +69,10 @@ if command -v wgets &> /dev/null; then
 	alias wget="wget --hsts-file=\"\$XDG_DATA_HOME/wget-hsts\""
 fi
 
+if command -v sqlite3 &> /dev/null; then
+	export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
+fi
+
 if [ -r "$HOME/.bashrc" ]; then
 	. "$HOME/.bashrc"
 fi
