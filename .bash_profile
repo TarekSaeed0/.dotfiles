@@ -65,7 +65,7 @@ if command -v wine &> /dev/null || command -v wine64 &> /dev/null; then
 	export WINEPREFIX="$XDG_DATA_HOME/wine/prefixes/default"
 fi
 
-if command -v wgets &> /dev/null; then
+if command -v wget &> /dev/null; then
 	alias wget="wget --hsts-file=\"\$XDG_DATA_HOME/wget-hsts\""
 fi
 
