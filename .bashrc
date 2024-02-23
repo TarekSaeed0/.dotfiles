@@ -153,11 +153,13 @@ trap "command rm \"\${TMPDIR:-/tmp}/\$__prompt_timer_id.__prompt_timer\" &> /dev
 
 # fetch only once
 
-__fetch_id="$USER"
-if ! [ -f "${TMPDIR:-/tmp}/$__fetch_id.fetch" ]; then
-	touch "${TMPDIR:-/tmp}/$__fetch_id.fetch"
-	trap "command rm \"\${TMPDIR:-/tmp}/\$__fetch_id.fetch\" &> /dev/null" EXIT
-	neofetch
+if commnad -v neofetch &> /dev/null; then
+	__fetch_id="$USER"
+	if ! [ -f "${TMPDIR:-/tmp}/$__fetch_id.fetch" ]; then
+		touch "${TMPDIR:-/tmp}/$__fetch_id.fetch"
+		trap "command rm \"\${TMPDIR:-/tmp}/\$__fetch_id.fetch\" &> /dev/null" EXIT
+		neofetch
+	fi
 fi
 
 # aliases
