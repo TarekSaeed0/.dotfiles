@@ -7,9 +7,9 @@ esac
 
 # start tmux session if not already in one
 
-#if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
-#	exec tmux &> /dev/null
-#fi
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+	exec tmux &> /dev/null
+fi
 
 # prompt
 
