@@ -50,7 +50,7 @@ __prompt_command() {
 		"$XDG_VIDEOS_DIR") PS1L+="󰕧";;
 		*) PS1L+="";;
 	esac
-	PS1L+="\] "
+	PS1L+="\]"
 	PS1L+=" \$(__prompt_cwd \"\w\") "
 
 	PS1L+="\[\e[0;1;38;2;24;24;37m\]"
@@ -61,7 +61,7 @@ __prompt_command() {
 	PS1R=""
 
 	if [ "$exit" != 0 ]; then
-		PS1R+="\[\e[1;31m\]$exit   \[\e[2D \]"
+		PS1R+="\[\e[1;31m\]$exit  \[\e[1D\] "
 	fi
 
 	if [ -n "$timer" ]; then
@@ -83,7 +83,7 @@ __prompt_command() {
 		seconds="$(awk -v timer="$timer" "BEGIN { print timer % 60 }")"
 		PS1R+="${seconds}s "
 
-		PS1R+="  \[\e[1D\] "
+		PS1R+=" \[\e[1D\] "
 	fi
 
 	if [ -n "${PS1R// /}" ]; then
