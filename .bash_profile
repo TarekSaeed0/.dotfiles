@@ -73,6 +73,10 @@ if command -v sqlite3 &> /dev/null; then
 	export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
 fi
 
+if command -v ollama &> /dev/null; then
+	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
+fi
+
 if [ -r "$HOME/.bashrc" ]; then
 	. "$HOME/.bashrc"
 fi
