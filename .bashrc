@@ -22,19 +22,10 @@ __prompt_command() {
 	timer="$(__prompt_timer_end)"
 
 	PS1L=""
-	PS1L+="\[\e[1;38;2;203;166;247m\]"
-	PS1L+=" \[\e[1D\]"
-
-	PS1L+="\[\e[38;2;24;24;37;48;2;203;166;247m\]"
-	PS1L+="  \[\e[1D\] "
-	PS1L+="\[\e[1m\]"
-	PS1L+="\u "
-
-	PS1L+="\[\e[38;2;203;166;247;48;2;24;24;37m\]"
-	PS1L+="  \[\e[2D\]"
-	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
-
-	PS1L+="  \[\e[1D"
+	PS1L+="\[\e[1;38;2;203;166;247m\] \[\e[1D\]"
+	PS1L+="\[\e[38;2;24;24;37;48;2;203;166;247m\]  \[\e[1D\] \[\e[1m\]\u "
+	PS1L+="\[\e[38;2;203;166;247;48;2;24;24;37m\]  \[\e[2D\]"
+	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]  \[\e[1D"
 	if [ -f "$XDG_CONFIG_HOME/user-dirs.dirs" ]; then
 		. "$XDG_CONFIG_HOME/user-dirs.dirs"
 	fi
@@ -50,21 +41,18 @@ __prompt_command() {
 		"$XDG_VIDEOS_DIR") PS1L+="󰕧";;
 		*) PS1L+="";;
 	esac
-	PS1L+="\]"
-	PS1L+=" \$(__prompt_cwd \"\w\") "
-
-	PS1L+="\[\e[0;1;38;2;24;24;37m\]"
-	PS1L+=" \[\e[1D\]"
+	PS1L+="\] \$(__prompt_cwd \"\w\") "
+	PS1L+="\[\e[0;1;38;2;24;24;37m\] \[\e[1D\]"
 	PS1L+="\[\e[0m\]"
 	PS1L+=" "
 
 	PS1R=""
 
-	if [ "$exit" != 0 ]; then
-		PS1R+="\[\e[1;31m\]$exit  \[\e[1D\] "
-	fi
-
 	if [ -n "$timer" ]; then
+		if [ "$exit" != 0 ]; then
+			PS1R+="\[\e[1;31m\]$exit  \[\e[1D\] "
+		fi
+
 		PS1R+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
 
 		local hours
@@ -84,27 +72,23 @@ __prompt_command() {
 		PS1R+="${seconds}s "
 
 		PS1R+=" \[\e[1D\] "
-	fi
 
-	if [ -n "${PS1R// /}" ]; then
 		PS1R_="$PS1R"
 		PS1R=""
 
-		PS1R+="\[\e[1;38;2;24;24;37m\]"
-		PS1R+=" \[\e[1D\]"
+		PS1R+="\[\e[1;38;2;24;24;37m\] \[\e[1D\]"
 		PS1R+="\[\e[48;2;24;24;37m\] "
 
 		PS1R+="$PS1R_"
 
-		PS1R+="\[\e[0;1;38;2;24;24;37m\]"
-		PS1R+=" \[\e[1D\]"
+		PS1R+="\[\e[0;1;38;2;24;24;37m\] \[\e[1D\]"
 		PS1R+="\[\e[0m\]"
 	fi
 
 	PS1R_stripped="${PS1R//\\\[*([^\]])\\\]/}"
 	PS1R="${PS1R//@(\\\[|\\\])/}"
 
-	PS1="\[$(tput sc)\]\[\e[$(tput cols)C\e[${#PS1R_stripped}D$PS1R$(tput rc)\]$PS1L"
+	PS1="\[\e[$(($(tput cols) - ${#PS1R_stripped} + 1))G$PS1R\e[0G\]$PS1L"
 }
 
 # prompt current working directory
@@ -127,7 +111,7 @@ __prompt_cwd() {
 		if [[ $parent =~ [^$separator]*$separator?(.*)$ ]]; then
 			parent="${BASH_REMATCH[1]}"
 		fi
-		parent="\001$(tput sc)\002 \001$(tput rc)$ellipsis\002$separator$parent"
+		parent=" \001\e[1D$ellipsis\002$separator$parent"
 	fi
 
 	echo -e "$parent\001\e[0;1;48;2;24;24;37m\002$name"
