@@ -16,15 +16,15 @@ export HISTSIZE=10000
 export HISTCONTROL="ignoreboth"
 
 if command -v nvim &> /dev/null; then
-	export EDITOR="/usr/bin/nvim"
+	export EDITOR="nvim"
 	export MANPAGER="nvim +Man!"
 fi
 
 if command -v clang &> /dev/null; then
-	export CC="/usr/bin/clang"
+	export CC="clang"
 fi
 if command -v clang++ &> /dev/null; then
-	export CXX="/usr/bin/clang++"
+	export CXX="clang++"
 fi
 
 if command -v npm &> /dev/null; then
