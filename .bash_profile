@@ -52,10 +52,7 @@ if command -v gpg &> /dev/null; then
 fi
 
 if command -v adb &> /dev/null; then
-	if ! [ -d "$XDG_DATA_HOME/android" ]; then
-		mkdir -p "$XDG_DATA_HOME/android"
-	fi
-	alias adb="HOME=\"\$XDG_DATA_HOME/android\" adb"
+	alias adb="[ -d \"\$XDG_DATA_HOME/android\" ] || mkdir -p \"\$XDG_DATA_HOME/android\"; HOME=\"\$XDG_DATA_HOME/android\" adb"
 fi
 
 if command -v wine &> /dev/null || command -v wine64 &> /dev/null; then
@@ -71,10 +68,6 @@ fi
 
 if command -v sqlite3 &> /dev/null; then
 	export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
-fi
-
-if command -v ollama &> /dev/null; then
-	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
 fi
 
 if [ -r "$HOME/.bashrc" ]; then

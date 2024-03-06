@@ -88,7 +88,7 @@ __prompt_command() {
 	PS1R_stripped="${PS1R//\\\[*([^\]])\\\]/}"
 	PS1R="${PS1R//@(\\\[|\\\])/}"
 
-	PS1="\[\e[$(($(tput cols) - ${#PS1R_stripped} + 1))G$PS1R\e[0G\]$PS1L"
+	PS1="\[\e[$((COLUMNS - ${#PS1R_stripped} + 1))G$PS1R\e[0G\]$PS1L"
 }
 
 # prompt current working directory
@@ -204,6 +204,8 @@ if command -v git &> /dev/null; then
 
 	unset -v ENABLE_DOTFILES
 fi
+
+retry() { while ! "$@"; do :; done; }
 
 # source command not found if installed
 
