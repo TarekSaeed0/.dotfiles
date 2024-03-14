@@ -37,6 +37,8 @@ fi
 
 if command -v rustup &> /dev/null; then
 	export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+	export PATH="$PATH:$(dirname $(rustup which rustc))"
+
 fi
 if command -v cargo &> /dev/null; then
 	export CARGO_HOME="$XDG_DATA_HOME/cargo"
