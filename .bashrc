@@ -27,10 +27,16 @@ __prompt_command() {
 	PS1L+="\[\e[1;38;2;203;166;247m\] \[\e[1D\]"
 	PS1L+="\[\e[38;2;24;24;37;48;2;203;166;247m\]  \[\e[1D\] \[\e[1m\]\u "
 	PS1L+="\[\e[38;2;203;166;247;48;2;24;24;37m\]  \[\e[2D\]"
-	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]  \[\e[1D"
+	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\] "
+
+	if git branch --no-color &> /dev/null; then
+		PS1L+=" \[\e[1D\] $(git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/') "
+	fi
+
 	if [ -f "$XDG_CONFIG_HOME/user-dirs.dirs" ]; then
 		. "$XDG_CONFIG_HOME/user-dirs.dirs"
 	fi
+	PS1L+=" \[\e[1D"
 	case "$PWD" in
 		"$HOME") PS1L+="";;
 		"$XDG_DESKTOP_DIR") PS1L+="󰍹";;
@@ -44,6 +50,7 @@ __prompt_command() {
 		*) PS1L+="";;
 	esac
 	PS1L+="\] \$(__prompt_cwd \"\w\") "
+
 	PS1L+="\[\e[0;1;38;2;24;24;37m\] \[\e[1D\]"
 	PS1L+="\[\e[0m\]"
 	PS1L+=" "
