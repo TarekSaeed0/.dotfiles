@@ -72,6 +72,19 @@ if command -v sqlite3 &> /dev/null; then
 	export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
 fi
 
+if command -v exa &> /dev/null; then
+	EXA_COLORS="da=38;2;203;166;247:"
+	EXA_COLORS+="uu=38;2;250;179;135:"
+	EXA_COLORS+="gu=38;2;250;179;135:"
+	EXA_COLORS+="ur=38;2;250;179;135:"
+	EXA_COLORS+="gr=38;2;250;179;135:"
+	EXA_COLORS+="tr=38;2;250;179;135:"
+	EXA_COLORS+="uw=38;2;203;166;247:"
+	EXA_COLORS+="gw=38;2;203;166;247:"
+	EXA_COLORS+="tw=38;2;203;166;247:"
+	export EXA_COLORS
+fi
+
 if [ -r "$HOME/.bashrc" ]; then
 	. "$HOME/.bashrc"
 fi

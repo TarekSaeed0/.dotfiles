@@ -172,9 +172,13 @@ if command -v dircolors &> /dev/null; then
 		eval "$(dircolors -b)"
 	fi
 
-	eval "$(dircolors -b <(echo "DIR 1;38;2;203;166;247"))"
+	eval "$(dircolors -b <(echo "DIR 38;2;203;166;247"))"
 
-	function ls() { command ls -lsh --color "$@" | tail -n +2; }
+	if command -v exa &> /dev/null; then
+		alias ls="exa -l --icons"
+	else
+		function ls() { command ls -lsh --color "$@" | tail -n +2; }
+	fi
     alias dir="dir --color=auto"
     alias vdir="vdir --color=auto"
 
@@ -182,7 +186,11 @@ if command -v dircolors &> /dev/null; then
     alias fgrep="fgrep --color=auto"
     alias egrep="egrep --color=auto"
 else
-	function ls() { command ls -lsh "$@" | tail -n +2; }
+	if command -v exa &> /dev/null; then
+		alias ls="exa -l --icons"
+	else
+		function ls() { command ls -lsh "$@" | tail -n +2; }
+	fi
 fi
 
 cd() { builtin cd "$@" && ls .; }
