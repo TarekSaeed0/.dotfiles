@@ -37,18 +37,23 @@ __prompt_command() {
 		. "$XDG_CONFIG_HOME/user-dirs.dirs"
 	fi
 	PS1L+=" \[\e[1D"
-	case "$PWD" in
-		"$HOME") PS1L+="";;
-		"$XDG_DESKTOP_DIR") PS1L+="󰍹";;
-		"$XDG_DOWNLOAD_DIR") PS1L+="󰇚";;
-		"$XDG_TEMPLATES_DIR") PS1L+="";;
-		"$XDG_PUBLICSHARE_DIR") PS1L+="";;
-		"$XDG_DOCUMENTS_DIR") PS1L+="󰈙";;
-		"$XDG_MUSIC_DIR") PS1L+="";;
-		"$XDG_PICTURES_DIR") PS1L+="";;
-		"$XDG_VIDEOS_DIR") PS1L+="󰕧";;
-		*) PS1L+="";;
-	esac
+	if [ "$PWD" = "$HOME" ]; then
+		PS1L+=""
+	elif command -v xdg-user-dir &> /dev/null; then
+		case "$PWD" in
+			"$(xdg-user-dir DESKTOP)") PS1L+="󰍹";;
+			"$(xdg-user-dir DOWNLOAD)") PS1L+="󰇚";;
+			"$(xdg-user-dir TEMPLATES)") PS1L+="";;
+			"$(xdg-user-dir PUBLICSHARE)") PS1L+="";;
+			"$(xdg-user-dir DOCUMENTS)") PS1L+="󰈙";;
+			"$(xdg-user-dir MUSIC)") PS1L+="";;
+			"$(xdg-user-dir PICTURES)") PS1L+="";;
+			"$(xdg-user-dir VIDEOS)") PS1L+="󰿎";;
+			*) PS1L+="";;
+		esac
+	else
+		PS1L+=""
+	fi
 	PS1L+="\] \$(__prompt_cwd \"\w\") "
 
 	PS1L+="\[\e[0;1;38;2;24;24;37m\] \[\e[1D\]"
@@ -172,10 +177,10 @@ if command -v dircolors &> /dev/null; then
 		eval "$(dircolors -b)"
 	fi
 
-	eval "$(dircolors -b <(echo "DIR 38;2;203;166;247"))"
+	eval "$(dircolors -b <(echo "DIR 1;38;2;203;166;247"))"
 
 	if command -v exa &> /dev/null; then
-		alias ls="exa -l --icons"
+		alias ls="exa -lM --icons"
 	else
 		function ls() { command ls -lsh --color "$@" | tail -n +2; }
 	fi
@@ -187,7 +192,7 @@ if command -v dircolors &> /dev/null; then
     alias egrep="egrep --color=auto"
 else
 	if command -v exa &> /dev/null; then
-		alias ls="exa -l --icons"
+		alias ls="exa -lM --icons"
 	else
 		function ls() { command ls -lsh "$@" | tail -n +2; }
 	fi
