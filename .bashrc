@@ -180,7 +180,13 @@ if command -v dircolors &> /dev/null; then
 	eval "$(dircolors -b <(echo "DIR 1;38;2;203;166;247"))"
 
 	if command -v exa &> /dev/null; then
-		alias ls="exa -lM --git --icons"
+		function ls() {
+			if [ -t 1 ]; then
+				exa -lgM --git --color=always --icons=always "$@" | sed "s///g" | sed "s///g"
+			else
+				exa -lgM --git "$@"
+			fi
+		}
 	else
 		function ls() { command ls -lsh --color "$@" | tail -n +2; }
 	fi
@@ -192,7 +198,13 @@ if command -v dircolors &> /dev/null; then
     alias egrep="egrep --color=auto"
 else
 	if command -v exa &> /dev/null; then
-		alias ls="exa -lM --git --icons"
+		function ls() {
+			if [ -t 1 ]; then
+				exa -lgM --git --color=never --icons=always "$@" | sed "s///g"
+			else
+				exa -lgM --git --color=never "$@"
+			fi
+		}
 	else
 		function ls() { command ls -lsh "$@" | tail -n +2; }
 	fi

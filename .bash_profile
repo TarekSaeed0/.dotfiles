@@ -37,7 +37,7 @@ fi
 
 if command -v rustup &> /dev/null; then
 	export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
-	export PATH="$PATH:$(dirname $(rustup which rustc))"
+	export PATH="$PATH:$(dirname "$(rustup which rustc)")"
 
 fi
 if command -v cargo &> /dev/null; then
@@ -82,7 +82,13 @@ if command -v exa &> /dev/null; then
 	EXA_COLORS+="uw=38;2;203;166;247:"
 	EXA_COLORS+="gw=38;2;203;166;247:"
 	EXA_COLORS+="tw=38;2;203;166;247:"
+	EXA_COLORS+="xa=38;2;108;112;134:"
+	EXA_COLORS+="xx=38;2;108;112;134:"
 	export EXA_COLORS
+fi
+
+if command -v emacs &> /dev/null; then
+    PATH="$PATH:$XDG_CONFIG_HOME/emacs/bin"
 fi
 
 if [ -r "$HOME/.bashrc" ]; then
