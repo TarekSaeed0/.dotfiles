@@ -88,6 +88,9 @@ if command -v exa &> /dev/null; then
 fi
 
 if command -v emacs &> /dev/null; then
+	if [ ! -d "$XDG_CONFIG_HOME/emacs" ]; then
+		mkdir -p "$XDG_CONFIG_HOME/emacs"
+	fi
     PATH="$PATH:$XDG_CONFIG_HOME/emacs/bin"
 fi
 
