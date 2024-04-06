@@ -215,20 +215,20 @@ cd() { builtin cd "$@" && ls .; }
 # create alias for managing configuration
 
 if command -v git &> /dev/null; then
-	ENABLE_DOTFILES=false
+	are_dotfiles_enabled=1
 
 	if [ -d "$HOME/.dotfiles/" ]; then
 		if git -C "$HOME/.dotfiles/" rev-parse --is-inside-git-dir &> /dev/null; then
-			ENABLE_DOTFILES=true
+			are_dotfiles_enabled=0
 		fi
 	else
 		git init --bare "$HOME/.dotfiles"
 		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" config status.showUntrackedFiles no
 		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" remote add origin "https://github.com/TarekSaeed0/.dotfiles"
-		ENABLE_DOTFILES=true
+		are_dotfiles_enabled=0
 	fi
 
-	if [ "$ENABLE_DOTFILES" = true ]; then
+	if [ "$are_dotfiles_enabled" -eq 0 ]; then
 		alias dotfiles="git --git-dir=\"\$HOME/.dotfiles/\" --work-tree=\"\$HOME\""
 		if [ -r "/usr/share/bash-completion/bash_completion" ]; then
 			_completion_loader git
