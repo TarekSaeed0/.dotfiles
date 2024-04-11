@@ -100,8 +100,8 @@ if command -v exa &>/dev/null; then
 	EXA_COLORS+="xa=38;2;108;112;134:"
 	EXA_COLORS+="xx=38;2;108;112;134:"
 
-	EXA_COLORS+="bu=4;38;2;245;194;231:"
-	EXA_COLORS+="sc=38;2;245;194;231:"
+	EXA_COLORS+="bu=4;38;2;242;205;205:"
+	EXA_COLORS+="sc=38;2;242;205;205:"
 
 	EXA_COLORS+="sn=38;2;166;227;161:"
 	EXA_COLORS+="sb=38;2;166;227;161:"
