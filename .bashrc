@@ -184,7 +184,7 @@ if command -v dircolors &>/dev/null; then
 			if [ -t 1 ]; then
 				exa -lgM --git --color=always --icons=always "$@" | sed "s///g" | sed "s///g"
 			else
-				exa -lgM --git "$@"
+				command ls "$@"
 			fi
 		}
 	else
@@ -202,11 +202,17 @@ else
 			if [ -t 1 ]; then
 				exa -lgM --git --color=never --icons=always "$@" | sed "s///g"
 			else
-				exa -lgM --git --color=never "$@"
+				command ls "$@"
 			fi
 		}
 	else
-		function ls() { command ls -lsh "$@" | tail -n +2; }
+		function ls() {
+			if [ -t 1 ]; then
+				command ls -lsh "$@" | tail -n +2
+			else
+				command ls "$@"
+			fi
+		}
 	fi
 fi
 
