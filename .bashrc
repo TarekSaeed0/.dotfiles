@@ -177,7 +177,7 @@ if command -v dircolors &>/dev/null; then
 		eval "$(dircolors -b)"
 	fi
 
-	eval "$(dircolors -b <(echo "DIR 1;38;2;203;166;247"))"
+	eval "$(dircolors -b <(echo "DIR 1;38;2;148;226;213"))"
 
 	if command -v exa &>/dev/null; then
 		function ls() {
