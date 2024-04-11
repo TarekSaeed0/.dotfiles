@@ -106,6 +106,9 @@ if command -v exa &>/dev/null; then
 	EXA_COLORS+="sn=38;2;166;227;161:"
 	EXA_COLORS+="sb=38;2;166;227;161:"
 
+	EXA_COLORS+="ln=38;2;116;199;236:"
+	EXA_COLORS+="lp=38;2;116;199;236:"
+
 	export EXA_COLORS
 fi
 
