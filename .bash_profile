@@ -109,13 +109,6 @@ if command -v exa &>/dev/null; then
 	export EXA_COLORS
 fi
 
-if command -v emacs &>/dev/null; then
-	if [ ! -d "$XDG_CONFIG_HOME/emacs" ]; then
-		mkdir -p "$XDG_CONFIG_HOME/emacs"
-	fi
-	PATH="$PATH:$XDG_CONFIG_HOME/emacs/bin"
-fi
-
 if command -v ollama &>/dev/null; then
 	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
 fi
