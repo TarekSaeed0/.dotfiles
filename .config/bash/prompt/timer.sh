@@ -1,17 +1,25 @@
 #!/bin/bash
 
-PS0="\$(__prompt_timer_start $1)"
+export PS0="\$(__prompt_timer_start $1)"
+export PS1="\$(__prompt_timer_end $1)"
+
 __prompt_timer_start() {
-	date +%s.%N >"${TMPDIR:-/tmp}/__prompt.$1.timer"
+	date +%s.%N >"${TMPDIR:-/tmp}/__prompt.$1.timer_start"
 }
 __prompt_timer_end() {
-	if [ -f "${TMPDIR:-/tmp}/__prompt.$1.timer" ]; then
+	if [ -f "${TMPDIR:-/tmp}/__prompt.$1.timer_start" ]; then
 		awk \
-			-v start="$(cat "${TMPDIR:-/tmp}/__prompt.$1.timer")" \
+			-v start="$(cat "${TMPDIR:-/tmp}/__prompt.$1.timer_start")" \
 			-v end="$(date +%s.%N)" \
-			'BEGIN { printf("%.2f", end - start) }'
-		command rm "${TMPDIR:-/tmp}/__prompt.$1.timer" &>/dev/null
+			'BEGIN { printf("%.2f", end - start) }' >"${TMPDIR:-/tmp}/__prompt.$1.timer"
+		command rm "${TMPDIR:-/tmp}/__prompt.$1.timer_start" &>/dev/null
 	fi
 }
+__prompt_timer() {
+	if [ -f "${TMPDIR:-/tmp}/__prompt.$1.timer" ]; then
+		cat "${TMPDIR:-/tmp}/__prompt.$1.timer"
+	fi
+}
+
 __prompt_timer_start "$1"
-trap 'command rm "${TMPDIR:-/tmp}/__prompt.'"$1"'.timer" &> /dev/null' EXIT
+trap 'command rm "${TMPDIR:-/tmp}/__prompt.'"$1"'.timer_start" &> /dev/null' EXIT
