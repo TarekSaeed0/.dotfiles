@@ -16,9 +16,7 @@ __prompt_timer_end() {
 	fi
 }
 __prompt_timer() {
-	if [ -f "${TMPDIR:-/tmp}/__prompt.$1.timer" ]; then
-		cat "${TMPDIR:-/tmp}/__prompt.$1.timer"
-	fi
+	[ -f "${TMPDIR:-/tmp}/__prompt.$1.timer" ] && cat "${TMPDIR:-/tmp}/__prompt.$1.timer"
 }
 
 __prompt_timer_start "$1"
