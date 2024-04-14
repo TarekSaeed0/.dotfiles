@@ -258,3 +258,5 @@ retry() {
 if [ -r "/usr/share/doc/pkgfile/command-not-found.bash" ]; then
 	. "/usr/share/doc/pkgfile/command-not-found.bash"
 fi
+
+. "$XDG_CONFIG_HOME/bash/functions/cd.sh"
