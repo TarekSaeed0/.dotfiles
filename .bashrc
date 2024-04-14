@@ -216,8 +216,6 @@ else
 	fi
 fi
 
-cd() { builtin cd "$@" && ls .; }
-
 # create alias for managing configuration
 
 if command -v git &>/dev/null; then
