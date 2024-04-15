@@ -216,33 +216,6 @@ else
 	fi
 fi
 
-# create alias for managing configuration
-
-if command -v git &>/dev/null; then
-	are_dotfiles_enabled=1
-
-	if [ -d "$HOME/.dotfiles/" ]; then
-		if git -C "$HOME/.dotfiles/" rev-parse --is-inside-git-dir &>/dev/null; then
-			are_dotfiles_enabled=0
-		fi
-	else
-		git init --bare "$HOME/.dotfiles"
-		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" config status.showUntrackedFiles no
-		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" remote add origin "https://github.com/TarekSaeed0/.dotfiles"
-		are_dotfiles_enabled=0
-	fi
-
-	if [ "$are_dotfiles_enabled" -eq 0 ]; then
-		alias dotfiles="git --git-dir=\"\$HOME/.dotfiles/\" --work-tree=\"\$HOME\""
-		if [ -r "/usr/share/bash-completion/bash_completion" ]; then
-			_completion_loader git
-			complete -o bashdefault -o default -o nospace -F __git_wrap__git_main dotfiles
-		fi
-	fi
-
-	unset -v ENABLE_DOTFILES
-fi
-
 retry() {
 	while :; do
 		if "$@" || [ "$?" = 130 ]; then
@@ -258,3 +231,4 @@ if [ -r "/usr/share/doc/pkgfile/command-not-found.bash" ]; then
 fi
 
 . "$XDG_CONFIG_HOME/bash/functions/cd.sh"
+. "$XDG_CONFIG_HOME/bash/functions/dotfiles.sh"
