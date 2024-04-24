@@ -11,12 +11,39 @@ __prompt_timer_end() {
 		awk \
 			-v start="$(cat "${TMPDIR:-/tmp}/__prompt.$1.timer_start")" \
 			-v end="$(date +%s.%N)" \
-			'BEGIN { printf("%.2f", end - start) }' >"${TMPDIR:-/tmp}/__prompt.$1.timer"
+			'BEGIN { print end - start }' >"${TMPDIR:-/tmp}/__prompt.$1.timer"
 		command rm "${TMPDIR:-/tmp}/__prompt.$1.timer_start" &>/dev/null
 	fi
 }
 __prompt_timer() {
-	[ -f "${TMPDIR:-/tmp}/__prompt.$1.timer" ] && cat "${TMPDIR:-/tmp}/__prompt.$1.timer"
+	if [ -f "${TMPDIR:-/tmp}/__prompt.$1.timer" ]; then
+		local icon=""
+
+		local time=""
+
+		local timer
+		timer="$(cat "${TMPDIR:-/tmp}/__prompt.$1.timer")"
+
+		local hours
+		hours="$(awk -v timer="$timer" 'BEGIN { print int(timer / 3600) }')"
+		if [ "$hours" != 0 ]; then
+			time+="${hours}h "
+		fi
+
+		local minutes
+		minutes="$(awk -v timer="$timer" 'BEGIN { print int(timer / 60 % 60) }')"
+		if [ "$minutes" != 0 ]; then
+			time+="${minutes}m "
+		fi
+
+		local seconds
+		seconds="$(awk -v timer="$timer" 'BEGIN { printf("%.2f", timer % 60) }')"
+		if [ "$seconds" != "0.00" ] || [ -z "$time" ]; then
+			time+="${seconds}s "
+		fi
+
+		echo -e " \001\e[1D$icon\002 ${time::-1}"
+	fi
 }
 
 __prompt_timer_start "$1"
