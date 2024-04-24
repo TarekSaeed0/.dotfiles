@@ -43,11 +43,11 @@ __prompt_command() {
 		case "$PWD" in
 		"$(xdg-user-dir DESKTOP)") PS1L+="󰍹" ;;
 		"$(xdg-user-dir DOWNLOAD)") PS1L+="󰇚" ;;
-		"$(xdg-user-dir TEMPLATES)") PS1L+="" ;;
+		"$(xdg-user-dir TEMPLATES)") PS1L+="󰘓" ;;
 		"$(xdg-user-dir PUBLICSHARE)") PS1L+="" ;;
-		"$(xdg-user-dir DOCUMENTS)") PS1L+="󰈙" ;;
+		"$(xdg-user-dir DOCUMENTS)") PS1L+="" ;;
 		"$(xdg-user-dir MUSIC)") PS1L+="" ;;
-		"$(xdg-user-dir PICTURES)") PS1L+="" ;;
+		"$(xdg-user-dir PICTURES)") PS1L+="" ;;
 		"$(xdg-user-dir VIDEOS)") PS1L+="󰿎" ;;
 		*) PS1L+="" ;;
 		esac
@@ -230,5 +230,6 @@ if [ -r "/usr/share/doc/pkgfile/command-not-found.bash" ]; then
 	. "/usr/share/doc/pkgfile/command-not-found.bash"
 fi
 
-. "$XDG_CONFIG_HOME/bash/functions/cd.sh"
-. "$XDG_CONFIG_HOME/bash/functions/dotfiles.sh"
+for script in cd.sh dotfiles.sh; do
+	. "$XDG_CONFIG_HOME/bash/functions/$script"
+done
