@@ -179,41 +179,12 @@ if command -v dircolors &>/dev/null; then
 
 	eval "$(dircolors -b <(echo "DIR 1;38;2;148;226;213"))"
 
-	if command -v exa &>/dev/null; then
-		function ls() {
-			if [ -t 1 ]; then
-				exa -lgM --git --color=always --icons=always "$@" | sed "s///g" | sed "s///g"
-			else
-				command ls "$@"
-			fi
-		}
-	else
-		function ls() { command ls -lsh --color "$@" | tail -n +2; }
-	fi
 	alias dir="dir --color=auto"
 	alias vdir="vdir --color=auto"
 
 	alias grep="grep --color=auto"
 	alias fgrep="fgrep --color=auto"
 	alias egrep="egrep --color=auto"
-else
-	if command -v exa &>/dev/null; then
-		function ls() {
-			if [ -t 1 ]; then
-				exa -lgM --git --color=never --icons=always "$@" | sed "s///g"
-			else
-				command ls "$@"
-			fi
-		}
-	else
-		function ls() {
-			if [ -t 1 ]; then
-				command ls -lsh "$@" | tail -n +2
-			else
-				command ls "$@"
-			fi
-		}
-	fi
 fi
 
 retry() {
@@ -230,6 +201,6 @@ if [ -r "/usr/share/doc/pkgfile/command-not-found.bash" ]; then
 	. "/usr/share/doc/pkgfile/command-not-found.bash"
 fi
 
-for script in cd.sh dotfiles.sh; do
+for script in cd.sh ls.sh cat.sh dotfiles.sh; do
 	. "$XDG_CONFIG_HOME/bash/functions/$script"
 done
