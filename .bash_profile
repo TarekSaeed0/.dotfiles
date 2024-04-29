@@ -116,6 +116,10 @@ if command -v ollama &>/dev/null; then
 	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
 fi
 
+if command -v w3m &>/dev/null; then
+	export W3M_DIR="$XDG_STATE_HOME/w3m"
+fi
+
 if [ -r "$HOME/.bashrc" ]; then
 	. "$HOME/.bashrc"
 fi

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# command for managing dot files
+
 if command -v git &>/dev/null; then
 	dotfiles() {
 		if [ -d "$HOME/.dotfiles/" ]; then

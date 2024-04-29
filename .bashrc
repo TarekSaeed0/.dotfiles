@@ -187,20 +187,14 @@ if command -v dircolors &>/dev/null; then
 	alias egrep="egrep --color=auto"
 fi
 
-retry() {
-	while :; do
-		if "$@" || [ "$?" = 130 ]; then
-			break
-		fi
-	done
-}
-
 # source command not found if installed
 
 if [ -r "/usr/share/doc/pkgfile/command-not-found.bash" ]; then
 	. "/usr/share/doc/pkgfile/command-not-found.bash"
 fi
 
-for script in cd.sh ls.sh cat.sh dotfiles.sh; do
-	. "$XDG_CONFIG_HOME/bash/functions/$script"
+for script in cd.sh ls.sh cat.sh retry.sh dotfiles.sh; do
+	if [ -r "$XDG_CONFIG_HOME/bash/functions/$script" ]; then
+		. "$XDG_CONFIG_HOME/bash/functions/$script"
+	fi
 done
