@@ -18,21 +18,23 @@ cd() {
 		destination="$HOME${destination:1}"
 	fi
 
-	pushd "$destination" &>/dev/null || return
+	if pushd "$destination" &>/dev/null; then
+		destination="$PWD"
 
-	destination="$PWD"
+		local index=1
+		while :; do
+			local directory
+			directory="$(dirs -l +$index 2>/dev/null)" || break
 
-	local index=1
-	while :; do
-		local directory
-		directory="$(dirs -l +$index 2>/dev/null)" || break
-
-		if [ "$directory" -ef "$destination" ]; then
-			popd -n +$index &>/dev/null || break
-		else
-			((index++))
-		fi
-	done
+			if [ "$directory" -ef "$destination" ]; then
+				popd -n +$index &>/dev/null || break
+			else
+				((index++))
+			fi
+		done
+	else
+		command cd "$destination" || return
+	fi
 
 	ls
 }

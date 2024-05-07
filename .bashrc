@@ -149,15 +149,8 @@ __prompt_timer_end() {
 __prompt_timer_start
 trap "command rm \"\${TMPDIR:-/tmp}/\$__prompt_timer_id.__prompt_timer\" &> /dev/null" EXIT
 
-# fetch only once
-
-if command -v neofetch &>/dev/null; then
-	__fetch_id="$USER"
-	if ! [ -f "${TMPDIR:-/tmp}/$__fetch_id.fetch" ]; then
-		touch "${TMPDIR:-/tmp}/$__fetch_id.fetch"
-		trap "command rm \"\${TMPDIR:-/tmp}/\$__fetch_id.fetch\" &> /dev/null" EXIT
-		neofetch
-	fi
+if [ -r "$XDG_CONFIG_HOME/bash/fetch.sh" ]; then
+	. "$XDG_CONFIG_HOME/bash/fetch.sh"
 fi
 
 # aliases

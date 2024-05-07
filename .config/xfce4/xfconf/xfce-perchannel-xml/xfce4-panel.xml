@@ -111,7 +111,6 @@
     <property name="plugin-7" type="string" value="whiskermenu">
       <property name="menu-opacity" type="int" value="0"/>
       <property name="recent" type="array">
-        <value type="string" value="kitty.desktop"/>
         <value type="string" value="xfce-mouse-settings.desktop"/>
         <value type="string" value="xfce-ui-settings.desktop"/>
       </property>
