@@ -102,7 +102,7 @@ __prompt_command() {
 	PS1R_stripped="${PS1R//\\\[*([^\]])\\\]/}"
 	PS1R="${PS1R//@(\\\[|\\\])/}"
 
-	PS1="\[\e[$((COLUMNS - ${#PS1R_stripped} + 1))G$PS1R\e[0G\]$PS1L"
+	PS1="$PS1L\[$(tput sc)\e[0G\e[$((COLUMNS - ${#PS1R_stripped} + 1))G$PS1R$(tput rc)\]"
 }
 
 # prompt current working directory
