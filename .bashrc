@@ -15,13 +15,24 @@ fi
 
 # prompt
 
-PS0="\$(__prompt_timer_start \$ROOTPID)"
+for component in git location; do
+	if [ -r "$XDG_CONFIG_HOME/bash/prompt/${component}.sh" ]; then
+		. "$XDG_CONFIG_HOME/bash/prompt/${component}.sh"
+	fi
+done
+
+export __prompt_timer_id="$USER.$BASHPID"
+if [ -r "$XDG_CONFIG_HOME/bash/prompt/timer.sh" ]; then
+	. "$XDG_CONFIG_HOME/bash/prompt/timer.sh" "$__prompt_timer_id"
+fi
+
+PS0="\$(__prompt_timer_start \"\$__prompt_timer_id\")"
 
 PROMPT_COMMAND="__prompt_command"
 __prompt_command() {
 	local exit="$?"
-	local timer
-	timer="$(__prompt_timer_end)"
+
+	__prompt_timer_end "$__prompt_timer_id"
 
 	PS1L=""
 	PS1L+="\[\e[1;38;2;203;166;247m\] \[\e[1D\]"
@@ -29,32 +40,9 @@ __prompt_command() {
 	PS1L+="\[\e[38;2;203;166;247;48;2;24;24;37m\]  \[\e[2D\]"
 	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\] "
 
-	if git branch --no-color &>/dev/null; then
-		PS1L+=" \[\e[1D\] $(git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/') "
-	fi
+	PS1L+="$(__prompt_git)"
 
-	if [ -f "$XDG_CONFIG_HOME/user-dirs.dirs" ]; then
-		. "$XDG_CONFIG_HOME/user-dirs.dirs"
-	fi
-	PS1L+=" \[\e[1D"
-	if [ "$PWD" = "$HOME" ]; then
-		PS1L+=""
-	elif command -v xdg-user-dir &>/dev/null; then
-		case "$PWD" in
-		"$(xdg-user-dir DESKTOP)") PS1L+="󰍹" ;;
-		"$(xdg-user-dir DOWNLOAD)") PS1L+="󰇚" ;;
-		"$(xdg-user-dir TEMPLATES)") PS1L+="󰘓" ;;
-		"$(xdg-user-dir PUBLICSHARE)") PS1L+="" ;;
-		"$(xdg-user-dir DOCUMENTS)") PS1L+="" ;;
-		"$(xdg-user-dir MUSIC)") PS1L+="" ;;
-		"$(xdg-user-dir PICTURES)") PS1L+="" ;;
-		"$(xdg-user-dir VIDEOS)") PS1L+="󰿎" ;;
-		*) PS1L+="" ;;
-		esac
-	else
-		PS1L+=""
-	fi
-	PS1L+="\] \$(__prompt_cwd \"\w\") "
+	PS1L+="$(__prompt_location)"
 
 	PS1L+="\[\e[0;1;38;2;24;24;37m\] \[\e[1D\]"
 	PS1L+="\[\e[0m\]"
@@ -62,6 +50,8 @@ __prompt_command() {
 
 	PS1R=""
 
+	local timer
+	timer="$(__prompt_timer "$__prompt_timer_id")"
 	if [ -n "$timer" ]; then
 		if [ "$exit" != 0 ]; then
 			PS1R+="\[\e[1;31m\]$exit  \[\e[1D\] "
@@ -69,23 +59,7 @@ __prompt_command() {
 
 		PS1R+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\]"
 
-		local hours
-		hours="$(awk -v timer="$timer" "BEGIN { print int(timer / 3600) }")"
-		if [ "$hours" != 0 ]; then
-			PS1R+="${hours}h "
-		fi
-
-		local minutes
-		minutes="$(awk -v timer="$timer" "BEGIN { print int(timer / 60 % 60) }")"
-		if [ "$minutes" != 0 ]; then
-			PS1R+="${minutes}m "
-		fi
-
-		local seconds
-		seconds="$(awk -v timer="$timer" "BEGIN { print timer % 60 }")"
-		PS1R+="${seconds}s "
-
-		PS1R+=" \[\e[1D\] "
+		PS1R+="$timer"
 
 		PS1R_="$PS1R"
 		PS1R=""
@@ -104,50 +78,6 @@ __prompt_command() {
 
 	PS1="$PS1L\[$(tput sc)\e[0G\e[$((COLUMNS - ${#PS1R_stripped} + 1))G$PS1R$(tput rc)\]"
 }
-
-# prompt current working directory
-
-__prompt_cwd() {
-	local path="$1"
-	local maximum_length="$(($(tput cols) / 4))"
-
-	local separator="/"
-	local ellipsis="…"
-
-	local parent=""
-	local name="$path"
-	if [[ $path =~ ^(.*$separator)([^$separator]+)$ ]]; then
-		parent="${BASH_REMATCH[1]}"
-		name="${BASH_REMATCH[2]}"
-	fi
-	if ((${#path} > maximum_length)); then
-		parent="${parent:$((${#parent} + ${#ellipsis} + ${#separator} + ${#name} - maximum_length))}"
-		if [[ $parent =~ [^$separator]*$separator?(.*)$ ]]; then
-			parent="${BASH_REMATCH[1]}"
-		fi
-		parent=" \001\e[1D$ellipsis\002$separator$parent"
-	fi
-
-	echo -e "$parent\001\e[0;1;48;2;24;24;37m\002$name"
-}
-
-# prompt timer
-
-__prompt_timer_id="$USER.$BASHPID"
-__prompt_timer_start() {
-	date +%s.%N >"${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer"
-}
-__prompt_timer_end() {
-	if [ -f "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer" ]; then
-		awk \
-			-v start="$(cat "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer")" \
-			-v end="$(date +%s.%N)" \
-			"BEGIN { printf(\"%.2f\", end - start) }"
-		command rm "${TMPDIR:-/tmp}/$__prompt_timer_id.__prompt_timer" &>/dev/null
-	fi
-}
-__prompt_timer_start
-trap "command rm \"\${TMPDIR:-/tmp}/\$__prompt_timer_id.__prompt_timer\" &> /dev/null" EXIT
 
 if [ -r "$XDG_CONFIG_HOME/bash/fetch.sh" ]; then
 	. "$XDG_CONFIG_HOME/bash/fetch.sh"
@@ -186,8 +116,8 @@ if [ -r "/usr/share/doc/pkgfile/command-not-found.bash" ]; then
 	. "/usr/share/doc/pkgfile/command-not-found.bash"
 fi
 
-for script in cd.sh ls.sh cat.sh retry.sh dotfiles.sh; do
-	if [ -r "$XDG_CONFIG_HOME/bash/functions/$script" ]; then
-		. "$XDG_CONFIG_HOME/bash/functions/$script"
+for component in cd.sh ls.sh cat.sh retry.sh dotfiles.sh; do
+	if [ -r "$XDG_CONFIG_HOME/bash/functions/$component" ]; then
+		. "$XDG_CONFIG_HOME/bash/functions/$component"
 	fi
 done

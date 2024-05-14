@@ -1,11 +1,11 @@
 #!/bin/bash
 
 __prompt_location() {
-	local path="$PWD"
+	local path="${PWD/#$HOME/\~}"
 	local maximum_length="$(($(tput cols) / 4))"
 
 	local icon=""
-	if [ "$path" = "$HOME" ]; then
+	if [ "$path" = "~" ]; then
 		icon=""
 	elif command -v xdg-user-dir &>/dev/null; then
 		case "$path" in
@@ -37,5 +37,5 @@ __prompt_location() {
 		parent=" \001\e[1D$ellipsis\002$separator$parent"
 	fi
 
-	echo -e " \001\e[1D$icon\002 $parent\001\e[0;1;48;2;24;24;37m\002$name"
+	echo -e " \[\e[1D$icon\] $parent\[\e[0;1;48;2;24;24;37m\]$name "
 }
