@@ -8,7 +8,7 @@ esac
 # start tmux session if not already in one
 
 if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
-	if tmux new -A -s main &>/dev/null; then
+	if tmux &>/dev/null; then
 		exit
 	fi
 fi
