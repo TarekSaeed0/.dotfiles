@@ -9,9 +9,9 @@ esac
 
 if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
 	# find an unattached session
-	session=$(tmux list-sessions -F \
+	session="$(tmux list-sessions -F \
 		'#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' 2>/dev/null |
-		awk '/^0/ { if ($2 > t) { t = $2; s = $3 } }; END { if (s) printf "%s", s }')
+		awk '/^0/ { if ($2 > t) { t = $2; s = $3 } }; END { if (s) printf "%s", s }')"
 
 	if [ -n "$session" ]; then
 		tmux attach-session -t "$session" && exit
