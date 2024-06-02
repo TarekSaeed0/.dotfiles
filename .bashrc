@@ -9,9 +9,12 @@ esac
 
 if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
 	# find an unattached session
-	session="$(tmux list-sessions -F \
-		'#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' 2>/dev/null |
-		awk '/^0/ { if ($2 > t) { t = $2; s = $3 } }; END { if (s) printf "%s", s }')"
+	# FIX: running this on termux makes tmux give an error
+	if ! command -v termux-setup-storage &>/dev/null; then
+		session="$(tmux list-sessions -F \
+			'#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' 2>/dev/null |
+			awk '/^0/ { if ($2 > t) { t = $2; s = $3 } }; END { if (s) printf "%s", s }')"
+	fi
 
 	if [ -n "$session" ]; then
 		tmux attach-session -t "$session" && exit
@@ -35,7 +38,6 @@ fi
 
 PS0="\$(__prompt_timer_start \"\$__prompt_timer_id\")"
 
-PROMPT_COMMAND="__prompt_command"
 __prompt_command() {
 	local exit="$?"
 
@@ -85,6 +87,7 @@ __prompt_command() {
 
 	PS1="$PS1L\[$(tput sc)\e[0G\e[$((COLUMNS - ${#PS1R_stripped} + 1))G$PS1R$(tput rc)\]"
 }
+PROMPT_COMMAND="$PROMPT_COMMAND; __prompt_command"
 
 if [ -r "$XDG_CONFIG_HOME/bash/fetch.sh" ]; then
 	. "$XDG_CONFIG_HOME/bash/fetch.sh"
