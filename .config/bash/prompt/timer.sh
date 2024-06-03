@@ -1,28 +1,27 @@
 #!/bin/bash
 
-#export PS0="\$(__prompt_timer_start $1)"
-#export PS1="\$(__prompt_timer_end $1)"
+export PS0='$(__prompt_timer_start "$__prompt_id")'
 
 __prompt_timer_start() {
-	date +%s.%N >"${TMPDIR:-/tmp}/__prompt.$1.timer_start"
+	date +%s.%N >"${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer_start"
 }
 __prompt_timer_end() {
-	if [ -f "${TMPDIR:-/tmp}/__prompt.$1.timer_start" ]; then
+	if [ -f "${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer_start" ]; then
 		awk \
-			-v start="$(cat "${TMPDIR:-/tmp}/__prompt.$1.timer_start")" \
+			-v start="$(cat "${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer_start")" \
 			-v end="$(date +%s.%N)" \
-			'BEGIN { print end - start }' >"${TMPDIR:-/tmp}/__prompt.$1.timer"
-		command rm "${TMPDIR:-/tmp}/__prompt.$1.timer_start" &>/dev/null
+			'BEGIN { print end - start }' >"${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer"
+		command rm "${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer_start" &>/dev/null
 	fi
 }
 __prompt_timer() {
-	if [ -f "${TMPDIR:-/tmp}/__prompt.$1.timer" ]; then
+	if [ -f "${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer" ]; then
 		local icon=""
 
 		local time=""
 
 		local timer
-		timer="$(cat "${TMPDIR:-/tmp}/__prompt.$1.timer")"
+		timer="$(cat "${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer")"
 
 		local hours
 		hours="$(awk -v timer="$timer" 'BEGIN { print int(timer / 3600) }')"
@@ -44,9 +43,9 @@ __prompt_timer() {
 
 		echo -ne "${time::-1}  \[\e[1D$icon\] "
 
-		command rm "${TMPDIR:-/tmp}/__prompt.$1.timer" &>/dev/null
+		command rm "${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer" &>/dev/null
 	fi
 }
 
-__prompt_timer_start "$1"
-trap 'command rm "${TMPDIR:-/tmp}/__prompt.'"$1"'.timer_start" "${TMPDIR:-/tmp}/__prompt.'"$1"'.timer" &>/dev/null' EXIT
+__prompt_timer_start "$__prompt_id"
+trap 'command rm "${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer_start" "${TMPDIR:-/tmp}/__prompt.$__prompt_id.timer" &>/dev/null' EXIT
