@@ -112,6 +112,10 @@ if command -v exa &>/dev/null; then
 	export EXA_COLORS
 fi
 
+if command -v docker &>/dev/null; then
+	export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+fi
+
 if command -v ollama &>/dev/null; then
 	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
 fi

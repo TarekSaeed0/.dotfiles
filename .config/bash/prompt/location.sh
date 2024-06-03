@@ -8,7 +8,7 @@ __prompt_location() {
 	if [ "$path" = "~" ]; then
 		icon=""
 	elif command -v xdg-user-dir &>/dev/null; then
-		case "$path" in
+		case "${path/#\~/$HOME}" in
 		"$(xdg-user-dir DESKTOP)") icon="󰍹" ;;
 		"$(xdg-user-dir DOWNLOAD)") icon="󰇚" ;;
 		"$(xdg-user-dir TEMPLATES)") icon="󰘓" ;;
@@ -23,11 +23,12 @@ __prompt_location() {
 	local separator="/"
 	local ellipsis="…"
 
-	local parent=""
-	local name="$path"
 	if [[ $path =~ ^(.*$separator)([^$separator]+)$ ]]; then
 		parent="${BASH_REMATCH[1]}"
 		name="${BASH_REMATCH[2]}"
+	else
+		local parent=""
+		local name="$path"
 	fi
 	if ((${#path} > maximum_length)); then
 		parent="${parent:$((${#parent} + ${#ellipsis} + ${#separator} + ${#name} - maximum_length))}"
@@ -37,5 +38,5 @@ __prompt_location() {
 		parent=" \001\e[1D$ellipsis\002$separator$parent"
 	fi
 
-	echo -e " \[\e[1D$icon\] $parent\[\e[0;1;48;2;24;24;37m\]$name "
+	echo -ne " \[\e[1D$icon\] $parent\[\e[0;1;48;2;24;24;37m\]$name "
 }

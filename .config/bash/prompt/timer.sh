@@ -42,7 +42,7 @@ __prompt_timer() {
 			time+="${seconds}s "
 		fi
 
-		echo -e "${time::-1}  \[\e[1D$icon\] "
+		echo -ne "${time::-1}  \[\e[1D$icon\] "
 
 		command rm "${TMPDIR:-/tmp}/__prompt.$1.timer" &>/dev/null
 	fi
