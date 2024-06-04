@@ -8,8 +8,37 @@ for component in git location timer; do
 	fi
 done
 
+__prompt_title() {
+	local path="${PWD/#$HOME/\~}"
+	local maximum_length=16
+
+	local separator="/"
+	local ellipsis="…"
+
+	if [[ $path =~ ^(.*$separator)([^$separator]+)$ ]]; then
+		parent="${BASH_REMATCH[1]}"
+		name="${BASH_REMATCH[2]}"
+	else
+		local parent=""
+		local name="$path"
+	fi
+	if ((${#path} > maximum_length)); then
+		parent="${parent:$((${#parent} + ${#ellipsis} + ${#separator} + ${#name} - maximum_length))}"
+		if [[ $parent =~ [^$separator]*$separator?(.*)$ ]]; then
+			parent="${BASH_REMATCH[1]}"
+		fi
+		parent="$ellipsis$separator$parent"
+	fi
+
+	local location="$parent$name"
+
+	echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:$location\007"
+}
+
 __prompt_command() {
 	local exit="$?"
+
+	__prompt_title
 
 	__prompt_timer_end
 
@@ -57,4 +86,4 @@ __prompt_command() {
 
 	PS1="$PS1L\[$(tput sc)\e[0G\e[$((COLUMNS - ${#PS1R_stripped} + 1))G$PS1R$(tput rc)\]"
 }
-PROMPT_COMMAND="$PROMPT_COMMAND; __prompt_command"
+PROMPT_COMMAND="__prompt_command"
