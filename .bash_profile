@@ -57,13 +57,6 @@ if command -v adb &>/dev/null; then
 	alias adb="[ -d \"\$XDG_DATA_HOME/android\" ] || mkdir -p \"\$XDG_DATA_HOME/android\"; HOME=\"\$XDG_DATA_HOME/android\" adb"
 fi
 
-if command -v wine &>/dev/null || command -v wine64 &>/dev/null; then
-	if [ ! -d "$XDG_DATA_HOME/wine/prefixes" ]; then
-		mkdir -p "$XDG_DATA_HOME/wine/prefixes"
-	fi
-	export WINEPREFIX="$XDG_DATA_HOME/wine/prefixes/default"
-fi
-
 if command -v wget &>/dev/null; then
 	alias wget="wget --hsts-file=\"\$XDG_DATA_HOME/wget-hsts\""
 fi
@@ -112,16 +105,8 @@ if command -v exa &>/dev/null; then
 	export EXA_COLORS
 fi
 
-if command -v docker &>/dev/null; then
-	export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
-fi
-
 if command -v ollama &>/dev/null; then
 	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
-fi
-
-if command -v w3m &>/dev/null; then
-	export W3M_DIR="$XDG_STATE_HOME/w3m"
 fi
 
 if [ -r "$HOME/.bashrc" ]; then
