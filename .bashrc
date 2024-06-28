@@ -8,7 +8,3 @@ for component in multiplexer prompt fetch functions aliases; do
 		. "$XDG_CONFIG_HOME/bash/$component.sh"
 	fi
 done
-
-if [ -r "/usr/share/doc/pkgfile/command-not-found.bash" ]; then
-	. "/usr/share/doc/pkgfile/command-not-found.bash"
-fi
