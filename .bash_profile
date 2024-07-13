@@ -105,8 +105,22 @@ if command -v exa &>/dev/null; then
 	export EXA_COLORS
 fi
 
+if command -v w3m &>/dev/null; then
+	export W3M_DIR="$XDG_STATE_HOME/w3m"
+fi
+
 if command -v ollama &>/dev/null; then
 	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
+fi
+
+if command -v qt6ct &>/dev/null; then
+	export QT_QPA_PLATFORMTHEME=qt6ct
+fi
+
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc:$XDG_CONFIG_HOME/gtk-2.0/gtkrc.mine"
+
+if command -v dbus-launch &>/dev/null; then
+	export "$(dbus-launch --sh-syntax)"
 fi
 
 if [ -r "$HOME/.bashrc" ]; then
