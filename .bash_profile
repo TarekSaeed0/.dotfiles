@@ -53,8 +53,9 @@ if command -v gpg &>/dev/null; then
 	export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 fi
 
+export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 if command -v adb &>/dev/null; then
-	alias adb="[ -d \"\$XDG_DATA_HOME/android\" ] || mkdir -p \"\$XDG_DATA_HOME/android\"; HOME=\"\$XDG_DATA_HOME/android\" adb"
+	alias adb="[ -d \"\$ANDROID_USER_HOME\" ] || mkdir -p \"\$ANDROID_USER_HOME\"; HOME=\"\$ANDROID_USER_HOME\" adb"
 fi
 
 if command -v wget &>/dev/null; then
@@ -63,6 +64,10 @@ fi
 
 if command -v sqlite3 &>/dev/null; then
 	export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
+fi
+
+if command -v gradle &>/dev/null; then
+	export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 fi
 
 if command -v exa &>/dev/null; then
