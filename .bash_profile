@@ -126,7 +126,7 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc:$XDG_CONFIG_HOME/gtk-2.0/gt
 
 if [ -f "/etc/wsl.conf" ]; then
 	# manually launch dbus in wsl
-	export "$(dbus-launch)"
+	export $(dbus-launch)
 fi
 
 if [ -r "$HOME/.bashrc" ]; then
