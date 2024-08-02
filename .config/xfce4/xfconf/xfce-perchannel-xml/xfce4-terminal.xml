@@ -17,4 +17,8 @@
   <property name="color-bold-is-bright" type="bool" value="true"/>
   <property name="color-use-theme" type="bool" value="false"/>
   <property name="tab-activity-color" type="string" value="#FAB387"/>
+  <property name="run-custom-command" type="bool" value="false"/>
+  <property name="custom-command" type="string" value=""/>
+  <property name="command-login-shell" type="bool" value="false"/>
+  <property name="misc-default-geometry" type="string" value="64x24"/>
 </channel>
