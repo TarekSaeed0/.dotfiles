@@ -8,3 +8,5 @@ for component in multiplexer prompt fetch functions aliases; do
 		. "$XDG_CONFIG_HOME/bash/$component.sh"
 	fi
 done
+
+tabs -4
