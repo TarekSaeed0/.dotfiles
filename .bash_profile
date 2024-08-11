@@ -45,6 +45,10 @@ if command -v cargo &>/dev/null; then
 	export PATH="$PATH:$CARGO_HOME/bin"
 fi
 
+if command -v python &>/dev/null; then
+	export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+fi
+
 if command -v iceauth &>/dev/null; then
 	export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 fi
