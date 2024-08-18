@@ -8,7 +8,7 @@ if command -v termux-battery-status &>/dev/null; then
 		echo "$?"
 	)"
 else
-	battery="$(find /sys/class/power_supply/BAT* | head -n1)"
+	battery="$(find /sys/class/power_supply/{BAT,axp288_fuel_gauge,CMB}* | head -n1)"
 	if [ -z "$battery" ]; then
 		return
 	fi
