@@ -49,6 +49,11 @@ if command -v python &>/dev/null; then
 	export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 fi
 
+if command -v xauth &>/dev/null; then
+	export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+
+fi
+
 if command -v iceauth &>/dev/null; then
 	export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 fi
