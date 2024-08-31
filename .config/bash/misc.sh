@@ -15,7 +15,7 @@ if command -v fzf &>/dev/null; then
 		--marker="+" --pointer=">" --separator="─" --scrollbar="▐"
 		--info="right"'
 
-	ignored_patterns=".git,.dotfiles,.cache,.local,build,target,node_modules"
+	ignored_patterns=".git,.dotfiles,.cache,.local,build,target,env,node_modules"
 
 	file_previewer='bat --style=numbers --color=always {}'
 	directory_previewer='exa -I "'"${ignored_patterns//,/|}"'" -AMTL3 --color=always --icons=always {}  | sed "s///g" | sed "s///g"'
@@ -23,24 +23,18 @@ if command -v fzf &>/dev/null; then
 
 	export FZF_CTRL_T_OPTS='--walker-skip '"$ignored_patterns"' --preview "'"${path_previewer//\"/\\\"}"'"'
 	export FZF_ALT_C_OPTS='--walker-skip '"$ignored_patterns"' --preview "'"${directory_previewer//\"/\\\"}"'"'
-
-	_fzf_compgen_path() {
-		fd --hidden --follow --exclude ".git" . "$1"
-	}
-
-	_fzf_compgen_dir() {
-		fd --type d --hidden --follow --exclude ".git" . "$1"
-	}
+	export FZF_COMPLETION_OPTS='--walker-skip '"$ignored_patterns"
+	export FZF_COMPLETION_DIR_OPTS='--walker dir,follow,hidden'
 
 	_fzf_comprun() {
 		local command=$1
 		shift
 
 		case "$command" in
-		cd | pushd | rmdir) fzf --walker-skip "$ignored_patterns" --preview "$directory_previewer" "$@" ;;
+		cd | pushd | rmdir) fzf --preview "$directory_previewer" "$@" ;;
 		export | unset | printenv) fzf --preview "eval 'echo \$'{}" "$@" ;;
 		unalias | kill | ssh) fzf "$@" ;;
-		*) fzf --walker-skip "$ignored_patterns" --preview "$path_previewer" "$@" ;;
+		*) fzf --preview "$path_previewer" "$@" ;;
 		esac
 	}
 fi
