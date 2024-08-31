@@ -3,7 +3,9 @@
 tabs -4
 
 if command -v fzf &>/dev/null; then
-	export FZF_DEFAULT_OPTS="--tmux 75%"
+	eval "$(fzf --bash)"
+
+	export FZF_DEFAULT_OPTS="--tmux 75% --bind shift-up:preview-page-up,shift-down:preview-page-down"
 	export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 		--color=fg:#cdd6f4,fg+:#cdd6f4,bg:#1e1e2e,bg+:#313244
 		--color=hl:#f5c2e7,hl+:#f5c2e7,info:#6c7086,marker:#f9e2af
@@ -13,8 +15,24 @@ if command -v fzf &>/dev/null; then
 		--marker="+" --pointer=">" --separator="─" --scrollbar="▐"
 		--info="right"'
 
-	export FZF_CTRL_T_OPTS='--walker-skip .git,node_modules,target --preview "bat --color=always {} 2>/dev/null || exa -lgM --git --color=always --icons=always {} | sed \"s///g\" | sed \"s///g\""'
-	export FZF_ALT_C_OPTS='--walker-skip .git,node_modules,target --preview "exa -lgM --git --color=always --icons=always {} | sed \"s///g\" | sed \"s///g\""'
+	ignored_patterns=".git,.dotfiles,.cache,.local,build,target,node_modules"
 
-	eval "$(fzf --bash)"
+	file_previewer='bat --style=numbers --color=always {}'
+	directory_previewer='exa -I "'"${ignored_patterns//,/|}"'" -AMTL3 --color=always --icons=always {}  | sed "s///g" | sed "s///g"'
+	path_previewer="$file_previewer 2>/dev/null || $directory_previewer"
+
+	export FZF_CTRL_T_OPTS='--walker-skip '"$ignored_patterns"' --preview "'"${path_previewer//\"/\\\"}"'"'
+	export FZF_ALT_C_OPTS='--walker-skip '"$ignored_patterns"' --preview "'"${directory_previewer//\"/\\\"}"'"'
+
+	_fzf_comprun() {
+		local command=$1
+		shift
+
+		case "$command" in
+		cd | pushd | rmdir) fzf --preview "$directory_previewer" "$@" ;;
+		export | unset | printenv) fzf --preview "eval 'echo \$'{}" "$@" ;;
+		unalias | kill | ssh) fzf "$@" ;;
+		*) fzf --preview "$path_previewer" "$@" ;;
+		esac
+	}
 fi
