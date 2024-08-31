@@ -29,10 +29,10 @@ if command -v fzf &>/dev/null; then
 		shift
 
 		case "$command" in
-		cd | pushd | rmdir) fzf --preview "$directory_previewer" "$@" ;;
+		cd | pushd | rmdir) fzf --walker-skip "$ignored_patterns" --preview "$directory_previewer" "$@" ;;
 		export | unset | printenv) fzf --preview "eval 'echo \$'{}" "$@" ;;
 		unalias | kill | ssh) fzf "$@" ;;
-		*) fzf --preview "$path_previewer" "$@" ;;
+		*) fzf --walker-skip "$ignored_patterns" --preview "$path_previewer" "$@" ;;
 		esac
 	}
 fi

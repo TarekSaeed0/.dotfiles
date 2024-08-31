@@ -20,5 +20,5 @@
   <property name="run-custom-command" type="bool" value="false"/>
   <property name="custom-command" type="string" value=""/>
   <property name="command-login-shell" type="bool" value="false"/>
-  <property name="misc-default-geometry" type="string" value="64x24"/>
+  <property name="misc-default-geometry" type="string" value="112x27"/>
 </channel>
