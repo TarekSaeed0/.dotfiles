@@ -38,3 +38,7 @@ if command -v fzf &>/dev/null; then
 		esac
 	}
 fi
+
+if command -v flutter &>/dev/null; then
+	eval "$(flutter bash-completion)"
+fi

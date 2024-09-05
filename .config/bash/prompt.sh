@@ -2,7 +2,7 @@
 
 export __prompt_id="$USER.$BASHPID"
 
-for component in git location timer; do
+for component in git location timer virtual_environment; do
 	if [ -r "$XDG_CONFIG_HOME/bash/prompt/${component}.sh" ]; then
 		. "$XDG_CONFIG_HOME/bash/prompt/${component}.sh"
 	fi
@@ -21,6 +21,8 @@ __prompt_command() {
 	PS1L+="\[\e[0;38;2;108;112;134;48;2;24;24;37m\] "
 
 	PS1L+="$(__prompt_git)"
+
+	PS1L+="$(__prompt_virtual_environment)"
 
 	PS1L+="$(__prompt_location)"
 
