@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
+if command -v tmux &>/dev/null && [ -z "$TMUX" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
 	# FIX: running this on termux makes tmux give an error
 	if ! command -v termux-setup-storage &>/dev/null; then
 		session="$(tmux list-sessions -F \
