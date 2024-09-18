@@ -71,7 +71,10 @@ if command -v gpg &>/dev/null; then
 fi
 
 export ANDROID_HOME="$XDG_DATA_HOME/android/sdk"
+export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools"
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
+export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
+export ANDROID_AVD_HOME="$ANDROID_EMULATOR_HOME/avd"
 if command -v adb &>/dev/null; then
 	alias adb="[ -d \"\$ANDROID_USER_HOME\" ] || mkdir -p \"\$ANDROID_USER_HOME\"; HOME=\"\$ANDROID_USER_HOME\" adb"
 fi
