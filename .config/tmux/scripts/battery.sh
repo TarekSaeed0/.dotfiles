@@ -62,7 +62,7 @@ color_at_value() {
 
 	# Calculate the segment in the gradient this value falls into
 	local size index fraction
-	size="$(awk -v color_count="$color_count" 'BEGIN { print 1 / (color_count - 1) }')"
+	size="$(awk -v color_count="$color_count" 'BEGIN { print 1 / color_count }')"
 	index="$(
 		awk -v value="$value" \
 			-v size="$size" \
@@ -74,6 +74,10 @@ color_at_value() {
 			-v size="$size" \
 			'BEGIN { print (value - (index * size)) / size }'
 	)"
+
+	if [ "$index" -eq "$color_count" ]; then
+		((--index))
+	fi
 
 	# Get the two colors between which to interpolate
 	local color1="${colors[$index]}"
