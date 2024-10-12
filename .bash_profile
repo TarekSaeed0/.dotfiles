@@ -143,6 +143,10 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc:$XDG_CONFIG_HOME/gtk-2.0/gt
 
 export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 
+export TEXMFHOME="$XDG_DATA_HOME/texmf"
+export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
+export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
+
 if [ -f "/etc/wsl.conf" ]; then
 	# manually launch dbus in wsl
 	export $(dbus-launch)
