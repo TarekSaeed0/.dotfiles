@@ -147,6 +147,14 @@ export TEXMFHOME="$XDG_DATA_HOME/texmf"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
 
+if command -v R &>/dev/null; then
+	export R_ENVIRON_USER="$XDG_CONFIG_HOME/R/environ"
+	export R_HOME_USER="$HOME/documents/r"
+	export R_PROFILE_USER="$XDG_CONFIG_HOME/R/profile"
+	export R_LIBS_USER="$XDG_DATA_HOME/R/x86_64-pc-linux-gnu-library"
+	export R_HISTFILE="$XDG_STATE_HOME/R/history"
+fi
+
 if [ -f "/etc/wsl.conf" ]; then
 	# manually launch dbus in wsl
 	export $(dbus-launch)
