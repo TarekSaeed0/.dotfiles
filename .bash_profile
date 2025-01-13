@@ -20,6 +20,9 @@ export HISTCONTROL="ignoreboth"
 # Editor
 
 if command -v nvim &>/dev/null; then
+	if [ -d "$XDG_CONFIG_HOME/nvim-lazyvim" ]; then
+		export NVIM_APPNAME="nvim-lazyvim"
+	fi
 	export EDITOR="nvim"
 	export MANPAGER="nvim +Man!"
 fi
