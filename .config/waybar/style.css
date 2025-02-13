@@ -1,0 +1,126 @@
+@import "themes/mocha.css";
+
+* {
+	font-family: JetBrains Mono Nerd Font;
+	font-size: 14px;
+	min-height: 0;
+}
+
+#waybar {
+	background: transparent;
+}
+
+#waybar > box {
+	margin: 10px;
+	border-radius: 10px;
+}
+
+tooltip {
+	background-color: @base;
+}
+tooltip label {
+	color: @text;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+	color: @text;
+	border-radius: 10px;
+	background-color: @mantle;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.8);
+}
+
+#workspaces {
+	border-radius: 10px;
+	margin: 5px;
+	background-color: @base;
+	margin-left: 0.75rem;
+}
+
+#workspaces button {
+	color: @overlay0;
+	border-radius: 10px;
+	padding: 0.4rem;
+}
+
+#workspaces button.active {
+	color: @teal;
+}
+
+#workspaces button:hover {
+	color: @sky;
+}
+
+#idle_inhibitor,
+#pulseaudio,
+#backlight,
+#battery,
+#clock,
+#tray,
+#custom-power,
+#custom-notification {
+	background-color: @base;
+	padding: 0.25rem 0.75rem;
+	margin: 0.5rem 0;
+}
+
+#idle_inhibitor {
+	color: @overlay0;
+	margin-left: 0.75rem;
+	margin-right: 0.75rem;
+	border-radius: 10px;
+}
+
+#idle_inhibitor.activated {
+	background-color: @sky;
+	color: @base;
+}
+
+#pulseaudio {
+	color: @mauve;
+	border-radius: 10px 0px 0px 10px;
+}
+
+#battery {
+	color: @green;
+}
+
+#battery.charging {
+	color: @green;
+}
+
+#battery.warning:not(.charging) {
+	color: @red;
+}
+
+#backlight {
+	color: @yellow;
+}
+
+#backlight,
+#battery {
+	border-radius: 0;
+}
+
+#clock {
+	color: @lavender;
+	border-radius: 0px 10px 10px 0px;
+	margin-right: 0.75rem;
+}
+
+#tray {
+	margin-right: 0.75rem;
+	border-radius: 10px;
+}
+
+#custom-power {
+	margin-right: 0.75rem;
+	border-radius: 10px;
+	color: @red;
+}
+
+#custom-notification {
+	margin-right: 0.75rem;
+	border-radius: 10px;
+}

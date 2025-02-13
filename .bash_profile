@@ -56,6 +56,10 @@ if command -v python &>/dev/null; then
 	export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 fi
 
+if command -v java &>/dev/null; then
+	export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
+fi
+
 if command -v flutter &>/dev/null; then
 	export FLUTTER_ROOT="/usr/lib/flutter"
 fi
@@ -138,9 +142,7 @@ if command -v ollama &>/dev/null; then
 	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
 fi
 
-if command -v qt6ct &>/dev/null; then
-	export QT_QPA_PLATFORMTHEME=qt6ct
-fi
+export QT_QPA_PLATFORMTHEME=qt6ct
 
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc:$XDG_CONFIG_HOME/gtk-2.0/gtkrc.mine"
 
@@ -155,6 +157,12 @@ if command -v R &>/dev/null; then
 	export R_PROFILE_USER="$XDG_CONFIG_HOME/R/profile"
 	export R_LIBS_USER="$XDG_DATA_HOME/R/x86_64-pc-linux-gnu-library"
 	export R_HISTFILE="$XDG_STATE_HOME/R/history"
+fi
+
+export G2TP_OVMF_IMAGE="/usr/share/ovmf/x64/OVMF_CODE.4m.fd"
+
+if command -v firefox &>/dev/null; then
+	export BROWSER="firefox"
 fi
 
 if [ -f "/etc/wsl.conf" ]; then

@@ -1,0 +1,113 @@
+[
+	{
+		"layer": "bottom",
+		"position": "top",
+		"margin-left": 10,
+		"margin-right": 10,
+		"modules-left": ["hyprland/workspaces"],
+		"modules-center": ["wlr/taskbar"],
+		"modules-right": [
+			"idle_inhibitor",
+			"pulseaudio",
+			"backlight",
+			"battery",
+			"clock",
+			"tray",
+			"custom/power",
+			"custom/notification"
+		],
+		"hyprland/workspaces": {
+			"persistent-workspaces": {
+				"*": 3
+			},
+			"on-scroll-up": "hyprctl dispatch workspace e+1",
+			"on-scroll-down": "hyprctl dispatch workspace e-1",
+			"format": " {icon} ",
+			"format-icons": {
+				"default": ""
+			}
+		},
+		"wlr/taskbar": {
+			"on-click": "activate",
+			"on-click-middle": "close"
+		},
+		"idle_inhibitor": {
+			"format": "{icon}",
+			"format-icons": {
+				"activated": "",
+				"deactivated": ""
+			}
+		},
+		"pulseaudio": {
+			"format": "{icon} {volume}% {format_source}",
+			"format-bluetooth": "{icon} {volume}% {format_source}",
+			"format-bluetooth-muted": "{icon}   {format_source}",
+			"format-muted": "  {format_source}",
+			"format-source": " {volume}%",
+			"format-source-muted": "",
+			"format-icons": {
+				"headphone": "",
+				"hands-free": "",
+				"headset": "",
+				"phone": "",
+				"portable": "",
+				"car": "",
+				"default": ["", "", ""]
+			},
+			"on-click": "pavucontrol"
+		},
+		"backlight": {
+			"format": "{icon} {percent}%",
+			"format-icons": ["", "", "", "", "", "", "", "", ""],
+			"on-scroll-down": "brightnessctl s 5%-",
+			"on-scroll-up": "brightnessctl s +5%",
+			"on-click": "$XDG_CONFIG_HOME/rofi/applets/bin/brightness.sh"
+		},
+		"battery": {
+			"states": {
+				"warning": 30,
+				"critical": 15
+			},
+			"format": "{icon} {capacity}%",
+			"format-charging": "󱐋 {capacity}%",
+			"format-plugged": " {capacity}%",
+			"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+			"on-click": "$XDG_CONFIG_HOME/rofi/applets/bin/battery.sh"
+		},
+		"clock": {
+			"timezone": "Africa/Cairo",
+			"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+			"format-alt": " {:%d/%m/%Y}",
+			"format": " {:%I:%M}"
+		},
+		"tray": {
+			"icon-size": 21,
+			"spacing": 10
+		},
+		"custom/power": {
+			"format": "⏻",
+			"tooltip": false,
+			"on-click": "$XDG_CONFIG_HOME/rofi/powermenu/type-2/powermenu.sh"
+		},
+		"custom/notification": {
+			"tooltip": false,
+			"format": "{icon}",
+			"format-icons": {
+				"notification": "󰂚<sup></sup>",
+				"none": "󰂚",
+				"dnd-notification": "󰂛<sup></sup>",
+				"dnd-none": "󰂛",
+				"inhibited-notification": "󰂚<sup></sup>",
+				"inhibited-none": "󰂚",
+				"dnd-inhibited-notification": "󰂛<sup></sup>",
+				"dnd-inhibited-none": "󰂛"
+			},
+			"return-type": "json",
+			"exec-if": "which swaync-client",
+			"exec": "swaync-client -swb",
+			"on-click": "swaync-client -t -sw",
+			"on-click-right": "swaync-client -d -sw",
+			"escape": true
+		}
+	}
+]

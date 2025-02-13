@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.1" encoding="UTF-8"?>
 
 <channel name="xfce4-session" version="1.0">
   <property name="general" type="empty">
@@ -27,5 +27,8 @@
       <property name="Client4_Priority" type="empty"/>
       <property name="Client4_PerScreen" type="empty"/>
     </property>
+  </property>
+  <property name="shutdown" type="empty">
+    <property name="LockScreen" type="bool" value="false"/>
   </property>
 </channel>
