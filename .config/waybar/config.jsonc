@@ -8,13 +8,15 @@
 		"modules-center": ["wlr/taskbar"],
 		"modules-right": [
 			"idle_inhibitor",
-			"pulseaudio",
+			"pulseaudio#output",
+			"pulseaudio#input",
 			"backlight",
 			"battery",
 			"clock",
+			"hyprland/language",
 			"tray",
-			"custom/power",
-			"custom/notification"
+			"custom/notification",
+			"custom/power"
 		],
 		"hyprland/workspaces": {
 			"persistent-workspaces": {
@@ -38,29 +40,42 @@
 				"deactivated": ""
 			}
 		},
-		"pulseaudio": {
-			"format": "{icon} {volume}% {format_source}",
-			"format-bluetooth": "{icon} {volume}% {format_source}",
-			"format-bluetooth-muted": "{icon}   {format_source}",
-			"format-muted": "  {format_source}",
-			"format-source": " {volume}%",
-			"format-source-muted": "",
+		"pulseaudio#output": {
+			"format": "{icon} {volume}%",
+			"format-muted": " ",
+			"format-bluetooth": " {icon} {volume}%",
 			"format-icons": {
 				"headphone": "",
 				"hands-free": "",
 				"headset": "",
 				"phone": "",
+				"phone-muted": "",
 				"portable": "",
+				"hdmi": "",
 				"car": "",
 				"default": ["", "", ""]
 			},
-			"on-click": "pavucontrol"
+			"on-click": "pavucontrol",
+			"on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+			"reverse-scrolling": true
+		},
+		"pulseaudio#input": {
+			"format": "{format_source}",
+			"format-source": " {volume}%",
+			"format-source-muted": "",
+			"format-bluetooth": " {format_source}",
+			"on-click": "pavucontrol -t 4",
+			"on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+			"on-scroll-up": "[ $(pactl get-source-volume @DEFAULT_SOURCE@ | grep -Po '\\d+(?=%)' | head -n 1) -lt 100 ] && pactl set-source-volume @DEFAULT_SOURCE@ +1%",
+			"on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -1%",
+			"reverse-scrolling": true
 		},
 		"backlight": {
 			"format": "{icon} {percent}%",
 			"format-icons": ["", "", "", "", "", "", "", "", ""],
 			"on-scroll-down": "brightnessctl s 5%-",
-			"on-scroll-up": "brightnessctl s +5%",
+			"on-scroll-up": "brightnessctl s 5%+",
+			"reverse-scrolling": true,
 			"on-click": "$XDG_CONFIG_HOME/rofi/applets/bin/brightness.sh"
 		},
 		"battery": {
@@ -69,25 +84,27 @@
 				"critical": 15
 			},
 			"format": "{icon} {capacity}%",
-			"format-charging": "󱐋 {capacity}%",
-			"format-plugged": " {capacity}%",
+			"format-charging": "{icon}󱐋 {capacity}%",
+			"format-plugged": "{icon} {capacity}%",
 			"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
 			"on-click": "$XDG_CONFIG_HOME/rofi/applets/bin/battery.sh"
 		},
 		"clock": {
 			"timezone": "Africa/Cairo",
 			"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-			"format-alt": " {:%d/%m/%Y}",
-			"format": " {:%I:%M}"
+			"format-alt": " {:%d/%m/%Y}",
+			"format": " {:%I:%M %p}"
+		},
+		"hyprland/language": {
+			"format": " {}",
+			"min-length": 6,
+			"format-en": "en",
+			"format-ar": "ar",
+			"keyboard-name": "at-translated-set-2-keyboard"
 		},
 		"tray": {
 			"icon-size": 21,
 			"spacing": 10
-		},
-		"custom/power": {
-			"format": "⏻",
-			"tooltip": false,
-			"on-click": "$XDG_CONFIG_HOME/rofi/powermenu/type-2/powermenu.sh"
 		},
 		"custom/notification": {
 			"tooltip": false,
@@ -107,7 +124,13 @@
 			"exec": "swaync-client -swb",
 			"on-click": "swaync-client -t -sw",
 			"on-click-right": "swaync-client -d -sw",
+			"on-click-middle": "swaync-client -C -sw",
 			"escape": true
+		},
+		"custom/power": {
+			"format": "⏻",
+			"tooltip": false,
+			"on-click": "$XDG_CONFIG_HOME/rofi/powermenu/type-2/powermenu.sh"
 		}
 	}
 ]

@@ -9,9 +9,8 @@
 #waybar {
 	background: transparent;
 }
-
 #waybar > box {
-	margin: 10px;
+	margin: 10px 10px 8px 10px;
 	border-radius: 10px;
 }
 
@@ -30,26 +29,41 @@ tooltip label {
 	background-color: @mantle;
 	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.8);
 }
+.modules-left {
+	margin-right: 10px;
+}
+.modules-center {
+	margin: 0 10px;
+}
+.modules-right {
+	margin-left: 10px;
+}
 
 #workspaces {
 	border-radius: 10px;
-	margin: 5px;
 	background-color: @base;
-	margin-left: 0.75rem;
+	margin: 8px 10px;
 }
-
 #workspaces button {
 	color: @overlay0;
 	border-radius: 10px;
-	padding: 0.4rem;
+	padding: 6px;
 }
-
 #workspaces button.active {
 	color: @teal;
 }
-
 #workspaces button:hover {
 	color: @sky;
+}
+
+#taskbar {
+	background-color: @base;
+	margin: 8px 10px;
+	border-radius: 10px;
+}
+#taskbar button {
+	padding: 6px 10px;
+	border-radius: 10px;
 }
 
 #idle_inhibitor,
@@ -57,45 +71,47 @@ tooltip label {
 #backlight,
 #battery,
 #clock,
+#language,
 #tray,
 #custom-power,
 #custom-notification {
 	background-color: @base;
-	padding: 0.25rem 0.75rem;
-	margin: 0.5rem 0;
+	padding: 6px;
+	margin: 8px 0;
 }
 
 #idle_inhibitor {
 	color: @overlay0;
-	margin-left: 0.75rem;
-	margin-right: 0.75rem;
+	padding: 6px 10px;
+	margin: 8px 5px 8px 10px;
 	border-radius: 10px;
 }
 
 #idle_inhibitor.activated {
-	background-color: @sky;
+	background-color: @teal;
 	color: @base;
 }
 
-#pulseaudio {
-	color: @mauve;
+#pulseaudio.output {
 	border-radius: 10px 0px 0px 10px;
+	padding-left: 10px;
+	margin-left: 5px;
 }
 
-#battery {
-	color: @green;
+#pulseaudio.output.muted {
+	color: @overlay0;
+}
+
+#pulseaudio.input.source-muted {
+	color: @overlay0;
 }
 
 #battery.charging {
-	color: @green;
+	color: @text;
 }
 
 #battery.warning:not(.charging) {
 	color: @red;
-}
-
-#backlight {
-	color: @yellow;
 }
 
 #backlight,
@@ -103,24 +119,33 @@ tooltip label {
 	border-radius: 0;
 }
 
-#clock {
-	color: @lavender;
+#language {
 	border-radius: 0px 10px 10px 0px;
-	margin-right: 0.75rem;
+	padding-right: 10px;
+	margin-right: 5px;
 }
 
 #tray {
-	margin-right: 0.75rem;
+	padding: 6px 10px;
+	margin: 8px 5px;
 	border-radius: 10px;
-}
-
-#custom-power {
-	margin-right: 0.75rem;
-	border-radius: 10px;
-	color: @red;
 }
 
 #custom-notification {
-	margin-right: 0.75rem;
+	padding: 6px 10px;
+	margin: 8px 5px;
+	border-radius: 10px;
+}
+#custom-notification.dnd-notification,
+#custom-notification.dnd-none,
+#custom-notification.dnd-inhibited-notification,
+#custom-notification.dnd-inhibited-none {
+	color: @overlay0;
+}
+
+#custom-power {
+	color: @teal;
+	padding: 6px 10px;
+	margin: 8px 10px 8px 5px;
 	border-radius: 10px;
 }
