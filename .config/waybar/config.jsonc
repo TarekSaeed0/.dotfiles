@@ -8,6 +8,7 @@
 		"modules-center": ["wlr/taskbar"],
 		"modules-right": [
 			"idle_inhibitor",
+			"privacy",
 			"pulseaudio#output",
 			"pulseaudio#input",
 			"backlight",
@@ -40,12 +41,34 @@
 				"deactivated": ""
 			}
 		},
+		"privacy": {
+			"icon-spacing": 4,
+			"icon-size": 18,
+			"transition-duration": 200,
+			"modules": [
+				{
+					"type": "screenshare",
+					"tooltip": true,
+					"tooltip-icon-size": 24
+				},
+				{
+					"type": "audio-out",
+					"tooltip": true,
+					"tooltip-icon-size": 24
+				},
+				{
+					"type": "audio-in",
+					"tooltip": true,
+					"tooltip-icon-size": 24
+				}
+			]
+		},
 		"pulseaudio#output": {
 			"format": "{icon} {volume}%",
 			"format-muted": " ",
 			"format-bluetooth": " {icon} {volume}%",
 			"format-icons": {
-				"headphone": "",
+				"headphone": "󰋋",
 				"hands-free": "",
 				"headset": "",
 				"phone": "",
@@ -80,13 +103,17 @@
 		},
 		"battery": {
 			"states": {
+				"half": 50,
 				"warning": 30,
 				"critical": 15
 			},
 			"format": "{icon} {capacity}%",
-			"format-charging": "{icon}󱐋 {capacity}%",
-			"format-plugged": "{icon} {capacity}%",
-			"format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+			"format-charging": "{icon} {capacity}%",
+			"format-plugged": " {icon} {capacity}%",
+			"format-icons": {
+				"charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+				"default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+			},
 			"on-click": "$XDG_CONFIG_HOME/rofi/applets/bin/battery.sh"
 		},
 		"clock": {
