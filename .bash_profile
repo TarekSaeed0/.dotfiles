@@ -64,14 +64,13 @@ if command -v flutter &>/dev/null; then
 	export FLUTTER_ROOT="/usr/lib/flutter"
 fi
 
-if command -v xauth &>/dev/null; then
-	export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
-
-fi
-
-if command -v iceauth &>/dev/null; then
-	export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
-fi
+# if command -v xauth &>/dev/null; then
+# 	export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+# fi
+#
+# if command -v iceauth &>/dev/null; then
+# 	export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
+# fi
 
 if command -v gpg &>/dev/null; then
 	export GNUPGHOME="$XDG_DATA_HOME/gnupg"
@@ -87,6 +86,7 @@ if command -v adb &>/dev/null; then
 fi
 
 if command -v wget &>/dev/null; then
+	export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 	alias wget="wget --hsts-file=\"\$XDG_DATA_HOME/wget-hsts\""
 fi
 
@@ -138,16 +138,6 @@ if command -v exa &>/dev/null; then
 	export EXA_COLORS
 fi
 
-if command -v ollama &>/dev/null; then
-	export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
-fi
-
-export QT_QPA_PLATFORMTHEME=qt6ct
-
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc:$XDG_CONFIG_HOME/gtk-2.0/gtkrc.mine"
-
-export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
-
 export TEXMFHOME="$XDG_DATA_HOME/texmf"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export TEXMFCONFIG="$XDG_CONFIG_HOME/texlive/texmf-config"
@@ -165,10 +155,30 @@ if command -v firefox &>/dev/null; then
 	export BROWSER="firefox"
 fi
 
-if [ -f "/etc/wsl.conf" ]; then
-	# manually launch dbus in wsl
-	export $(dbus-launch)
+if command -v vsim &>/dev/null; then
+	export LM_LICENSE_FILE="/opt/intelFPGA/23.1/questa_fse/licenses/LR-220945_License.dat:$LM_LICENSE_FILE"
+	export MODELSIM_TCL="$HOME/.config/modelsim/pref.tcl"
+	export QSYS_ROOTDIR="/home/tarek/.cache/paru/clone/quartus-free/pkg/quartus-free-quartus/opt/intelFPGA/23.1/quartus/sopc_builder/bin"
 fi
+
+if command -v jupyter &>/dev/null; then
+	export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+fi
+
+if command -v ipython &>/dev/null; then
+	export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+fi
+
+if command -v dotnet &>/dev/null; then
+	export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
+fi
+
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+
+export GTK_THEME="Breeze"
+export XCURSOR_SIZE=24
+
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc:$XDG_CONFIG_HOME/gtk-2.0/gtkrc.mine"
 
 if [ -r "$HOME/.bashrc" ]; then
 	. "$HOME/.bashrc"
