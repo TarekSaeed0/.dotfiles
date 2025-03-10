@@ -8,6 +8,15 @@ if command -v tmux &>/dev/null && [ -z "$TMUX" ] && [ "$TERM_PROGRAM" != "vscode
 			awk '/^0/ { if ($2 > t) { t = $2; s = $3 } }; END { if (s) printf "%s", s }')"
 	fi
 
+	case "$TERM" in
+	*kitty*)
+		export SNACKS_KITTY=true
+		;;
+	*)
+		export SNACKS_KITTY=false
+		;;
+	esac
+
 	if [ -n "$session" ]; then
 		tmux attach-session -t "$session" && exit
 	else
