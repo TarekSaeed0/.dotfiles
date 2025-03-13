@@ -12,9 +12,6 @@ if command -v tmux &>/dev/null && [ -z "$TMUX" ] && [ "$TERM_PROGRAM" != "vscode
 	*kitty*)
 		export SNACKS_KITTY=true
 		;;
-	*)
-		export SNACKS_KITTY=false
-		;;
 	esac
 
 	if [ -n "$session" ]; then
