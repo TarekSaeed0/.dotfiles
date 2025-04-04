@@ -1,4 +1,0 @@
-R_PROFILE_USER = /home/tarek/.config/R/profile
-R_LIBS_USER = /home/tarek/.local/share/R/x86_64-pc-linux-gnu-library
-R_HISTFILE = /home/tarek/.local/state/R/history
-
