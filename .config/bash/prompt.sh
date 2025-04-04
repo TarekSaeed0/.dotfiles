@@ -34,7 +34,7 @@ __prompt_command() {
 
 	local timer
 	timer="$(__prompt_timer)"
-	if [ -n "$timer" ]; then
+	if [ -n "$timer" ] && [ "$TERM_PROGRAM" != "vscode" ]; then
 		if [ "$exit" != 0 ]; then
 			PS1R+="\[\e[1;31m\]$exit  \[\e[1D\] "
 		fi

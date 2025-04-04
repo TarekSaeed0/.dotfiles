@@ -32,7 +32,7 @@
 ; bar_width = 20
 ; bar_spacing = 5
 
-# sdl_glsl have these default values, they are only used to calulate max number of bars.
+# sdl_glsl have these default values, they are only used to calculate max number of bars.
 ; bar_width = 1
 ; bar_spacing = 0
 
@@ -79,8 +79,8 @@
 # For jack 'source' will be the name of the JACK server to connect to, e.g. 'foobar'. Default: 'default'.
 # README.md contains further information on how to setup CAVA for JACK.
 #
-method = pulse
-source = 1
+; method = pulse
+; source = auto
 
 ; method = pipewire
 ; source = auto
@@ -144,10 +144,12 @@ source = 1
 # use one of the predefined ones.
 ; method = noncurses
 
-# Orientation of the visualization. Can be 'bottom', 'top', 'left' or 'right'.
-# Default is 'bottom'. Other orientations are only supported on sdl and ncruses
-# output. Note: many fonts have weird glyphs for 'top' and 'right' characters,
-# which can make ncurses not look right.
+# Orientation of the visualization. Can be 'bottom', 'top', 'left', 'right' or
+# 'horizontal'. Default is 'bottom'. 'left and 'right' are only supported on sdl
+# and ncruses output. 'horizontal' (bars go up and down from center) is only supported
+# on noncurses output.
+# Note: many fonts have weird or missing glyphs for characters used in orientations
+# other than 'bottom', which can make output not look right.
 ; orientation = bottom
 
 # Visual channels. Can be 'stereo' or 'mono'.
@@ -159,7 +161,9 @@ source = 1
 ; mono_option = average
 ; reverse = 0
 
-# Raw output target. A fifo will be created if target does not exist.
+# Raw output target.
+# On Linux, a fifo will be created if target does not exist.
+# On Windows, a named pipe will be created if target does not exist.
 ; raw_target = /dev/stdout
 
 # Raw data format. Can be 'binary' or 'ascii'.
@@ -187,11 +191,11 @@ source = 1
 # 'frequency' displays the lower cut off frequency of the bar above.
 # Only supported on ncurses and noncurses output.
 ; xaxis = none
-
-# enable alacritty synchronized updates. 1 = on, 0 = off
+ 
+# enable synchronized sync. 1 = on, 0 = off
 # removes flickering in alacritty terminal emulator.
 # defaults to off since the behaviour in other terminal emulators is unknown
-; alacritty_sync = 0
+; synchronized_sync = 0
 
 # Shaders for sdl_glsl, located in $HOME/.config/cava/shaders
 ; vertex_shader = pass_through.vert
@@ -203,6 +207,12 @@ source = 1
 # disable console blank (screen saver) in tty
 # (Not supported on FreeBSD)
 ; disable_blanking = 0
+
+# show a flat bar at the bottom of the screen when idle, 1 = on, 0 = off
+; show_idle_bar_heads = 1
+
+# show waveform instead of frequency spectrum, 1 = on, 0 = off
+; waveform = 0
 
 [color]
 
@@ -222,7 +232,6 @@ source = 1
 # background must also be defined in hex or remain commented out. 1 = on, 0 = off.
 # You can define as many as 8 different colors. They range from bottom to top of screen
 ; gradient = 0
-; gradient_count = 8
 ; gradient_color_1 = '#59cc33'
 ; gradient_color_2 = '#80cc33'
 ; gradient_color_3 = '#a6cc33'
@@ -232,9 +241,8 @@ source = 1
 ; gradient_color_7 = '#cc5933'
 ; gradient_color_8 = '#cc3333'
 
-# https://github.com/catppuccin/cava/blob/main/themes/mocha.cava
-
 [color]
+background = '#1e1e2e'
 
 gradient = 1
 
