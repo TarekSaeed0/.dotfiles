@@ -67,10 +67,10 @@ fi
 # if command -v xauth &>/dev/null; then
 # 	export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 # fi
-#
-# if command -v iceauth &>/dev/null; then
-# 	export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
-# fi
+
+if command -v iceauth &>/dev/null; then
+	export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
+fi
 
 if command -v gpg &>/dev/null; then
 	export GNUPGHOME="$XDG_DATA_HOME/gnupg"
@@ -174,9 +174,6 @@ if command -v dotnet &>/dev/null; then
 fi
 
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
-
-export GTK_THEME="Breeze"
-export XCURSOR_SIZE=24
 
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc:$XDG_CONFIG_HOME/gtk-2.0/gtkrc.mine"
 
