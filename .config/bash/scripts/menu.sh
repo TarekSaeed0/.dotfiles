@@ -2,6 +2,54 @@
 
 # inspired by https://web.archive.org/web/20180130222805/http://pro-toolz.net/data/programming/bash/Bash_fancy_menu.html
 
+option_color="203;166;247"
+
+# each option must be in the format: icon name command
+options=(
+	"󰣇" "Arch Terminal" "proot-distro login archlinux --user tarek --shared-tmp"
+	"" "Arch Desktop" "bash /data/data/com.termux/files/home/bin/termux-desktop"
+	"" "Arch Desktop VNC" "bash /data/data/com.termux/files/home/bin/termux-desktop-vnc"
+	"" "Terminal" "bash"
+)
+
+# add the exit option
+options+=("󰩈" "Exit" "exit 0")
+
+# find the maximum option width
+options_width=0
+for ((i = 1; i < ${#options[@]}; i += 3)); do
+	option="${options[i]}"
+	if [ "${#option}" -gt "${options_width}" ]; then
+		options_width="${#option}"
+	fi
+done
+
+# pad each option to the maximum option width
+for ((i = 1; i < ${#options[@]}; i += 3)); do
+	options[i]="$(printf "%-${options_width}s" "${options[i]}")"
+done
+
+#######################################
+# Display an option.
+# Globals:
+# 	option_color
+# 	options
+# 	header
+# Arguments:
+# 	Index of the option to display.
+#######################################
+display_option() {
+	# center the option
+	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / 3 + 2)) / 2 + ${#header[@]} + 3 + ${1} + 1));$(((COLUMNS - (options_width + 9)) / 2 - 1))H"
+
+	local index="${1}"
+	if [ "${index}" = "${current}" ]; then
+		echo -en "\e[1;38;2;${option_color}m \e[38;2;24;24;37;48;2;${option_color}m ${options[3 * ${1}]} \e[38;2;${option_color};48;2;24;24;37m\e[0;1;48;2;24;24;37m ${options[3 * ${1} + 1]} \e[0;1;38;2;24;24;37m\e[0m"
+	else
+		echo -en "\e[1;38;2;${option_color}m  \e[38;2;24;24;37;48;2;${option_color}m ${options[3 * ${1}]} \e[38;2;${option_color};48;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${options[3 * ${1} + 1]} \e[0;1;38;2;24;24;37m\e[0m"
+	fi
+}
+
 header_color="148;226;213"
 
 headers=(
@@ -91,55 +139,7 @@ headers=(
 
 header_index="$((RANDOM % (${#headers[@]} / 2) * 2))"
 
-option_color="203;166;247"
-
-# each option must be in the format: icon name command
-options=(
-	"󰣇" "Arch Terminal" "proot-distro login archlinux --user tarek --shared-tmp"
-	"" "Arch Desktop" "bash /data/data/com.termux/files/home/bin/termux-desktop"
-	"" "Arch Desktop VNC" "bash /data/data/com.termux/files/home/bin/termux-desktop-vnc"
-	"" "Terminal" "bash"
-)
-
-# add the exit option
-options+=("󰩈" "Exit" "exit 0")
-
-# find the maximum option width
-options_width=0
-for ((i = 1; i < ${#options[@]}; i += 3)); do
-	option="${options[i]}"
-	if [ "${#option}" -gt "${options_width}" ]; then
-		options_width="${#option}"
-	fi
-done
-
-# pad each option to the maximum option width
-for ((i = 1; i < ${#options[@]}; i += 3)); do
-	options[i]="$(printf "%-${options_width}s" "${options[i]}")"
-done
-
-#######################################
-# Display an option.
-# Globals:
-# 	option_color
-# 	options
-# 	header
-# Arguments:
-# 	Index of the option to display.
-#######################################
-display_option() {
-	# center the option
-	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / 3 + 2)) / 2 + ${#header[@]} + 3 + ${1} + 1));$(((COLUMNS - (options_width + 9)) / 2 - 1))H"
-
-	local index="${1}"
-	if [ "${index}" = "${current}" ]; then
-		echo -en "\e[1;38;2;${option_color}m \e[38;2;24;24;37;48;2;${option_color}m ${options[3 * ${1}]} \e[38;2;${option_color};48;2;24;24;37m\e[0;1;48;2;24;24;37m ${options[3 * ${1} + 1]} \e[0;1;38;2;24;24;37m\e[0m"
-	else
-		echo -en "\e[1;38;2;${option_color}m  \e[38;2;24;24;37;48;2;${option_color}m ${options[3 * ${1}]} \e[38;2;${option_color};48;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${options[3 * ${1} + 1]} \e[0;1;38;2;24;24;37m\e[0m"
-	fi
-}
-
-message="Choose an option"
+message="Termux - a terminal emulator for Android"
 
 footer=" Termux v${TERMUX_VERSION}"
 
