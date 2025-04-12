@@ -1,0 +1,4 @@
+#!/bin/bash
+
+nvim --headless +"CreateProject $*" +qa
+echo ""
