@@ -20,3 +20,11 @@ if command -v dircolors &>/dev/null; then
 	alias fgrep="fgrep --color=auto"
 	alias egrep="egrep --color=auto"
 fi
+
+if [ -n "$NVIM" ]; then
+	if command -v nvr &>/dev/null; then
+		alias nvim="nvr -l"
+		export EDITOR='nvr -l'
+		export MANPAGER='nvr -l +Man! -'
+	fi
+fi
