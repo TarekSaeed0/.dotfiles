@@ -14,9 +14,4 @@ if command -v git &>/dev/null; then
 
 		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
 	}
-
-	if [ -r "/usr/share/bash-completion/bash_completion" ]; then
-		_completion_loader git
-		complete -o bashdefault -o default -o nospace -F __git_wrap__git_main dotfiles
-	fi
 fi
