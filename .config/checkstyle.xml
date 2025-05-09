@@ -89,6 +89,8 @@
     <property name="message" value="Line has trailing spaces."/>
   </module>
 
+	<module name="SuppressionCommentFilter"/>
+
   <!-- Checks for Headers                                -->
   <!-- See https://checkstyle.org/checks/header/index.html   -->
   <!-- <module name="Header"> -->
