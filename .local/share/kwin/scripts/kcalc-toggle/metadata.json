@@ -1,0 +1,18 @@
+{
+  "KPlugin": {
+    "Id": "kcalc-toggle",
+    "Name": "KCalc Toggle",
+    "Icon": "kcalc",
+    "Description": "Toggle KCalc window: focus if open, otherwise launch",
+    "Version": "1.0",
+    "License": "MIT",
+    "Authors": [
+      {
+        "Name": "Tarek Saeed"
+      }
+    ]
+  },
+  "X-Plasma-API": "javascript",
+  "X-Plasma-MainScript": "code/main.js",
+  "KPackageStructure": "KWin/Script"
+}
