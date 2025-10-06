@@ -7,12 +7,6 @@ case $- in
 *) return ;;
 esac
 
-# Add user local bin to PATH
-
-if [ -d "$HOME/.local/bin" ]; then
-	PATH="$HOME/.local/bin:$PATH"
-fi
-
 # Source bash components
 
 for component in multiplexer functions aliases misc prompt; do

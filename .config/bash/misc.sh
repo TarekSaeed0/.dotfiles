@@ -15,7 +15,7 @@ if command -v fzf &>/dev/null; then
 		--marker="+" --pointer=">" --separator="─" --scrollbar="▐"
 		--info="right"'
 
-	ignored_patterns=".git,build,target,venv,.venv,node_modules,$(find -L "$HOME" -mindepth 1 -maxdepth 1 -type d -name ".*" ! -name ".config" -exec basename {} \; | while read -r i; do printf '%q\n' "$i"; done | paste -sd, -),$(find -L "$XDG_CONFIG_HOME" -mindepth 1 -maxdepth 1 -type d ! -regex "$XDG_CONFIG_HOME/\(bash\|nvim\|tmux\|kitty\|git\|neofetch\|btop\|cava\)" -exec basename {} \; | while read -r i; do printf '%q\n' "$i"; done | paste -sd, -)"
+	ignored_patterns=".git,build,target,venv,.venv,node_modules,$(find -L "$HOME" -mindepth 1 -maxdepth 1 -type d -name ".*" ! -name ".config" -exec basename {} \; | while read -r i; do printf '%q\n' "$i"; done | paste -sd, -),$(find -L "$XDG_CONFIG_HOME" -mindepth 1 -maxdepth 1 -type d ! -regex "$XDG_CONFIG_HOME/\(bash\|nvim\|tmux\|kitty\|git\|neofetch\|fastfetch\|btop\|cava\)" -exec basename {} \; | while read -r i; do printf '%q\n' "$i"; done | paste -sd, -)"
 
 	file_previewer='bat --style=numbers --color=always {}'
 	directory_previewer='exa -I "'"${ignored_patterns//,/|}"'" -AMTL3 --color=always --icons=always {}  | sed "s///g" | sed "s///g"'

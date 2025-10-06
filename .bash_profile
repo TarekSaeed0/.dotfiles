@@ -53,17 +53,9 @@ if command -v python &>/dev/null; then
 	export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 fi
 
-if command -v java &>/dev/null; then
-	export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
-fi
-
 if command -v flutter &>/dev/null; then
 	export FLUTTER_ROOT="/usr/lib/flutter"
 fi
-
-# if command -v xauth &>/dev/null; then
-# 	export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
-# fi
 
 if command -v iceauth &>/dev/null; then
 	export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
@@ -78,6 +70,7 @@ export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tool
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
 export ANDROID_AVD_HOME="$ANDROID_EMULATOR_HOME/avd"
+export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 "$ANDROID_HOME/ndk")"
 if command -v adb &>/dev/null; then
 	alias adb="[ -d \"\$ANDROID_USER_HOME\" ] || mkdir -p \"\$ANDROID_USER_HOME\"; HOME=\"\$ANDROID_USER_HOME\" adb"
 fi
@@ -152,12 +145,6 @@ if command -v firefox &>/dev/null; then
 	export BROWSER="firefox"
 fi
 
-if command -v vsim &>/dev/null; then
-	export LM_LICENSE_FILE="/opt/intelFPGA/23.1/questa_fse/licenses/LR-220945_License.dat:$LM_LICENSE_FILE"
-	export MODELSIM_TCL="$HOME/.config/modelsim/pref.tcl"
-	export QSYS_ROOTDIR="/home/tarek/.cache/paru/clone/quartus-free/pkg/quartus-free-quartus/opt/intelFPGA/23.1/quartus/sopc_builder/bin"
-fi
-
 if command -v jupyter &>/dev/null; then
 	export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 fi
@@ -170,9 +157,22 @@ if command -v dotnet &>/dev/null; then
 	export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 fi
 
+if command -v wine &>/dev/null; then
+	[ -d "$XDG_DATA_HOME/wineprefixes" ] || mkdir -p "$XDG_DATA_HOME/wineprefixes"
+	export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
+fi
+
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc:$XDG_CONFIG_HOME/gtk-2.0/gtkrc.mine"
+
+export XCURSOR_SIZE=24
+
+# Add user local bin to PATH
+
+if [ -d "$HOME/.local/bin" ]; then
+	PATH="$HOME/.local/bin:$PATH"
+fi
 
 if [ -r "$HOME/.bashrc" ]; then
 	. "$HOME/.bashrc"
