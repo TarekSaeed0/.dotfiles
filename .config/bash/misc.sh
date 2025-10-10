@@ -39,10 +39,6 @@ if command -v fzf &>/dev/null; then
 	}
 fi
 
-if command -v flutter &>/dev/null; then
-	eval "$(flutter bash-completion)"
-fi
-
 if [ -r /usr/share/doc/pkgfile/command-not-found.bash ]; then
 	source /usr/share/doc/pkgfile/command-not-found.bash
 fi
