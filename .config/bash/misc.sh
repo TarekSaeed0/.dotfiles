@@ -5,6 +5,9 @@ tabs -4
 if command -v fzf &>/dev/null; then
 	eval "$(fzf --bash)"
 
+	export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+	export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+
 	export FZF_DEFAULT_OPTS="--tmux 75% --bind shift-up:preview-page-up,shift-down:preview-page-down"
 	export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 		--color=fg:#cdd6f4,fg+:#cdd6f4,bg:#1e1e2e,bg+:#313244
@@ -15,15 +18,12 @@ if command -v fzf &>/dev/null; then
 		--marker="+" --pointer=">" --separator="─" --scrollbar="▐"
 		--info="right"'
 
-	ignored_patterns=".git,build,target,venv,.venv,node_modules,$(find -L "$HOME" -mindepth 1 -maxdepth 1 -type d -name ".*" ! -name ".config" -exec basename {} \; | while read -r i; do printf '%q\n' "$i"; done | paste -sd, -),$(find -L "$XDG_CONFIG_HOME" -mindepth 1 -maxdepth 1 -type d ! -regex "$XDG_CONFIG_HOME/\(bash\|nvim\|tmux\|kitty\|git\|neofetch\|fastfetch\|btop\|cava\)" -exec basename {} \; | while read -r i; do printf '%q\n' "$i"; done | paste -sd, -)"
-
 	file_previewer='bat --style=numbers --color=always {}'
-	directory_previewer='exa -I "'"${ignored_patterns//,/|}"'" -AMTL3 --color=always --icons=always {}  | sed "s///g" | sed "s///g"'
+	directory_previewer='exa -AMTL3 --color=always --icons=always {}  | sed "s///g" | sed "s///g"'
 	path_previewer="$file_previewer 2>/dev/null || $directory_previewer"
 
-	export FZF_CTRL_T_OPTS='--walker-skip '"$ignored_patterns"' --preview "'"${path_previewer//\"/\\\"}"'"'
-	export FZF_ALT_C_OPTS='--walker-skip '"$ignored_patterns"' --preview "'"${directory_previewer//\"/\\\"}"'"'
-	export FZF_COMPLETION_OPTS='--walker-skip '"$ignored_patterns"
+	export FZF_CTRL_T_OPTS='--preview "'"${path_previewer//\"/\\\"}"'"'
+	export FZF_ALT_C_OPTS='--preview "'"${directory_previewer//\"/\\\"}"'"'
 	export FZF_COMPLETION_DIR_OPTS='--walker dir,follow,hidden'
 
 	_fzf_comprun() {
