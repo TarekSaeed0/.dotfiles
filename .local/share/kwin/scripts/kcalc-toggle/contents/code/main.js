@@ -3,10 +3,12 @@ function toggleKCalc() {
     .windowList()
     .find((w) => w.resourceClass === "org.kde.kcalc");
 
-  print(window);
-
   if (window) {
-    workspace.activeWindow = window;
+    if (workspace.activeWindow === window) {
+      window.minimized = true;
+    } else {
+      workspace.activeWindow = window;
+    }
   } else {
     callDBus(
       "org.user.KCalcLauncher",
