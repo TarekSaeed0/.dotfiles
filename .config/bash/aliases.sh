@@ -21,6 +21,10 @@ if command -v dircolors &>/dev/null; then
 	alias egrep="egrep --color=auto"
 fi
 
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
 if [ -n "$NVIM" ]; then
 	if command -v nvr &>/dev/null; then
 		alias nvim="nvr -l"
