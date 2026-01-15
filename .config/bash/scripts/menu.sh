@@ -2,31 +2,38 @@
 
 # inspired by https://web.archive.org/web/20180130222805/http://pro-toolz.net/data/programming/bash/Bash_fancy_menu.html
 
+option_icon_offset=0
+option_shortcut_offset=1
+option_name_offset=2
+option_command_offset=3
+
+option_size=4
+
 option_color="203;166;247"
 
 # each option must be in the format: icon name command
 options=(
-	"󰣇" "Arch Terminal" "proot-distro login archlinux --user tarek --shared-tmp"
-	"" "Arch Desktop" "bash /data/data/com.termux/files/home/bin/termux-desktop"
-	"" "Arch Desktop VNC" "bash /data/data/com.termux/files/home/bin/termux-desktop-vnc"
-	"" "Terminal" "bash"
+	"󰣇" "" "Arch Terminal" "proot-distro login archlinux --user tarek --shared-tmp"
+	"" "" "Arch Desktop" "bash /data/data/com.termux/files/home/bin/termux-desktop"
+	"" "" "Arch Desktop VNC" "bash /data/data/com.termux/files/home/bin/termux-desktop-vnc"
+	"" "" "Terminal" "bash"
 )
 
 # add the exit option
-options+=("󰩈" "Exit" "exit 0")
+options+=("" "q" "Quit" "exit 0")
 
-# find the maximum option width
-options_width=0
-for ((i = 1; i < ${#options[@]}; i += 3)); do
-	option="${options[i]}"
-	if [ "${#option}" -gt "${options_width}" ]; then
-		options_width="${#option}"
+# find the maximum option name width
+maximum_option_name_width=0
+for ((i = option_name_offset; i < ${#options[@]}; i += option_size)); do
+	name="${options[i]}"
+	if [ "${#name}" -gt "${maximum_option_name_width}" ]; then
+		maximum_option_name_width="${#name}"
 	fi
 done
 
 # pad each option to the maximum option width
-for ((i = 1; i < ${#options[@]}; i += 3)); do
-	options[i]="$(printf "%-${options_width}s" "${options[i]}")"
+for ((i = option_name_offset; i < ${#options[@]}; i += option_size)); do
+	options[i]="$(printf "%-${maximum_option_name_width}s" "${options[i]}")"
 done
 
 #######################################
@@ -40,13 +47,13 @@ done
 #######################################
 display_option() {
 	# center the option
-	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / 3 + 2)) / 2 + ${#header[@]} + 3 + ${1} + 1));$(((COLUMNS - (options_width + 9)) / 2 - 1))H"
+	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2 + ${#header[@]} + 3 + ${1} + 1));$(((COLUMNS - (maximum_option_name_width + 9)) / 2 - 1))H"
 
 	local index="${1}"
 	if [ "${index}" = "${current}" ]; then
-		echo -en "\e[1;38;2;${option_color}m \e[38;2;24;24;37;48;2;${option_color}m ${options[3 * ${1}]} \e[38;2;${option_color};48;2;24;24;37m\e[0;1;48;2;24;24;37m ${options[3 * ${1} + 1]} \e[0;1;38;2;24;24;37m\e[0m"
+		echo -en "\e[1;38;2;${option_color}m \e[38;2;24;24;37;48;2;${option_color}m ${options[$option_size * ${1} + $option_icon_offset]} \e[38;2;${option_color};48;2;24;24;37m\e[0;1;48;2;24;24;37m ${options[$option_size * ${1} + $option_name_offset]} \e[0;1;38;2;24;24;37m\e[0m"
 	else
-		echo -en "\e[1;38;2;${option_color}m  \e[38;2;24;24;37;48;2;${option_color}m ${options[3 * ${1}]} \e[38;2;${option_color};48;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${options[3 * ${1} + 1]} \e[0;1;38;2;24;24;37m\e[0m"
+		echo -en "\e[1;38;2;${option_color}m  \e[38;2;24;24;37;48;2;${option_color}m ${options[$option_size * ${1} + $option_icon_offset]} \e[38;2;${option_color};48;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${options[$option_size * ${1} + $option_name_offset]} \e[0;1;38;2;24;24;37m\e[0m"
 	fi
 }
 
@@ -171,7 +178,7 @@ display_menu() {
 	done
 
 	# use small version of header if the big version doesn't fit
-	if [ "$((${#header[@]} + 3 + ${#options[@]} / 3 + 2))" -gt "${LINES}" ] || [ "${header_width}" -gt "${COLUMNS}" ]; then
+	if [ "$((${#header[@]} + 3 + ${#options[@]} / option_size + 2))" -gt "${LINES}" ] || [ "${header_width}" -gt "${COLUMNS}" ]; then
 		IFS=$'\n' read -rd '' -a header <<<"${headers[header_index + 1]}"
 
 		# find the small header's width
@@ -185,20 +192,20 @@ display_menu() {
 	fi
 
 	# display the header
-	echo -e "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / 3 + 2)) / 2));0H\e[1;38;2;${header_color}m"
+	echo -e "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2));0H\e[1;38;2;${header_color}m"
 	for line in "${header[@]}"; do
 		echo -e "\e[$(((COLUMNS - header_width) / 2 + 1))G${line}"
 	done
 
-	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / 3 + 2)) / 2 + ${#header[@]} + 2));$(((COLUMNS - ${#message} - 4) / 2 + 1))H\e[1;38;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${message} \e[0;1;38;2;24;24;37m\e[0m"
+	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2 + ${#header[@]} + 2));$(((COLUMNS - ${#message} - 4) / 2 + 1))H\e[1;38;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${message} \e[0;1;38;2;24;24;37m\e[0m"
 
 	# display the options
-	for ((i = 0; i < ${#options[@]} / 3; i++)); do
+	for ((i = 0; i < ${#options[@]} / option_size; i++)); do
 		display_option "${i}"
 	done
 
 	# display footer
-	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / 3 + 2)) / 2 + ${#header[@]} + 3 + ${#options[@]} / 3 + 2));$(((COLUMNS - ${#footer} - 4) / 2 + 1))H\e[1;38;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${footer} \e[0;1;38;2;24;24;37m\e[0m"
+	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2 + ${#header[@]} + 3 + ${#options[@]} / option_size + 2));$(((COLUMNS - ${#footer} - 4) / 2 + 1))H\e[1;38;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${footer} \e[0;1;38;2;24;24;37m\e[0m"
 }
 
 current=0
@@ -247,7 +254,7 @@ while :; do
 		# unhide cursor
 		echo -en "\e[?25h"
 
-		eval "${options[3 * ${current} + 2]}"
+		eval "${options[$option_size * ${current} + $option_command_offset]}"
 
 		# rehide cursor
 		echo -en "\e[?25l"
@@ -258,7 +265,7 @@ while :; do
 		previous="${current}"
 		((current--))
 		if [ "${current}" -lt 0 ]; then
-			current="$((${#options[@]} / 3 - 1))"
+			current="$((${#options[@]} / option_size - 1))"
 		fi
 		display_option "${previous}"
 		display_option "${current}"
@@ -266,12 +273,27 @@ while :; do
 	elif [ "${input}" = $'\e[B' ]; then
 		previous="${current}"
 		((current++))
-		if [ "${current}" -eq "$((${#options[@]} / 3))" ]; then
+		if [ "${current}" -eq "$((${#options[@]} / option_size))" ]; then
 			current=0
 		fi
 		display_option "${previous}"
 		display_option "${current}"
-	elif [ "${input}" = "q" ]; then
-		exit 0
+	else
+		for ((i = 0; i < ${#options[@]} / option_size; i++)); do
+			shortcut="${options[$option_size * ${i} + $option_shortcut_offset]}"
+			if [ -n "${shortcut}" ] && [ "${input}" = "${shortcut}" ]; then
+				clear
+
+				# unhide cursor
+				echo -en "\e[?25h"
+
+				eval "${options[$option_size * ${i} + $option_command_offset]}"
+
+				# rehide cursor
+				echo -en "\e[?25l"
+
+				display_menu
+			fi
+		done
 	fi
 done
