@@ -271,5 +271,7 @@ while :; do
 		fi
 		display_option "${previous}"
 		display_option "${current}"
+	elif [ "${input}" = "q" ]; then
+		exit 0
 	fi
 done
