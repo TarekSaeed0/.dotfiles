@@ -11,6 +11,8 @@ option_size=4
 
 option_color="203;166;247"
 
+option_spacing=17
+
 # each option must be in the format: icon name command
 options=(
 	"󰣇" "" "Arch Terminal" "proot-distro login archlinux --user tarek --shared-tmp"
@@ -47,13 +49,23 @@ done
 #######################################
 display_option() {
 	# center the option
-	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2 + ${#header[@]} + 3 + ${1} + 1));$(((COLUMNS - (maximum_option_name_width + 9)) / 2 - 1))H"
+	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2 + ${#header[@]} + 3 + ${1} + 1));$(((COLUMNS - (maximum_option_name_width + 9 + option_spacing + 5)) / 2 - 1))H"
 
 	local index="${1}"
+
+	local icon="${options[$option_size * ${index} + $option_icon_offset]}"
+	local name="${options[$option_size * ${index} + $option_name_offset]}"
+
 	if [ "${index}" = "${current}" ]; then
-		echo -en "\e[1;38;2;${option_color}m \e[38;2;24;24;37;48;2;${option_color}m ${options[$option_size * ${1} + $option_icon_offset]} \e[38;2;${option_color};48;2;24;24;37m\e[0;1;48;2;24;24;37m ${options[$option_size * ${1} + $option_name_offset]} \e[0;1;38;2;24;24;37m\e[0m"
+		echo -en "\e[1;38;2;${option_color}m \e[38;2;24;24;37;48;2;${option_color}m $icon \e[38;2;${option_color};48;2;24;24;37m\e[0;1;48;2;24;24;37m $name \e[0;1;38;2;24;24;37m\e[0m"
 	else
-		echo -en "\e[1;38;2;${option_color}m  \e[38;2;24;24;37;48;2;${option_color}m ${options[$option_size * ${1} + $option_icon_offset]} \e[38;2;${option_color};48;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${options[$option_size * ${1} + $option_name_offset]} \e[0;1;38;2;24;24;37m\e[0m"
+		echo -en "\e[1;38;2;${option_color}m  \e[38;2;24;24;37;48;2;${option_color}m $icon \e[38;2;${option_color};48;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m $name \e[0;1;38;2;24;24;37m\e[0m"
+	fi
+
+	local shortcut="${options[$option_size * ${index} + $option_shortcut_offset]}"
+	if [ -n "$shortcut" ]; then
+		echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2 + ${#header[@]} + 3 + ${1} + 1));$(((COLUMNS + (maximum_option_name_width + 9 + option_spacing)) / 2 - (5) / 2 - 1))H"
+		echo -en "\e[0;1;38;2;24;24;37m  \e[0;38;2;108;112;134;48;2;24;24;37m $shortcut \e[0;1;38;2;24;24;37m\e[0m"
 	fi
 }
 
