@@ -53,19 +53,19 @@ display_option() {
 
 	local index="${1}"
 
-	local icon="${options[$option_size * ${index} + $option_icon_offset]}"
-	local name="${options[$option_size * ${index} + $option_name_offset]}"
+	local icon="${options[${option_size} * ${index} + ${option_icon_offset}]}"
+	local name="${options[${option_size} * ${index} + ${option_name_offset}]}"
 
-	if [ "${index}" = "${current}" ]; then
-		echo -en "\e[1;38;2;${option_color}m \e[38;2;24;24;37;48;2;${option_color}m $icon \e[38;2;${option_color};48;2;24;24;37m\e[0;1;48;2;24;24;37m $name \e[0;1;38;2;24;24;37m\e[0m"
+	if [ "${index}" = "${current_option}" ]; then
+		echo -en "\e[1;38;2;${option_color}m \e[38;2;24;24;37;48;2;${option_color}m ${icon} \e[38;2;${option_color};48;2;24;24;37m\e[0;1;48;2;24;24;37m ${name} \e[0;1;38;2;24;24;37m\e[0m"
 	else
-		echo -en "\e[1;38;2;${option_color}m  \e[38;2;24;24;37;48;2;${option_color}m $icon \e[38;2;${option_color};48;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m $name \e[0;1;38;2;24;24;37m\e[0m"
+		echo -en "\e[1;38;2;${option_color}m  \e[38;2;24;24;37;48;2;${option_color}m ${icon} \e[38;2;${option_color};48;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${name} \e[0;1;38;2;24;24;37m\e[0m"
 	fi
 
-	local shortcut="${options[$option_size * ${index} + $option_shortcut_offset]}"
-	if [ -n "$shortcut" ]; then
+	local shortcut="${options[${option_size} * ${index} + ${option_shortcut_offset}]}"
+	if [ -n "${shortcut}" ]; then
 		echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2 + ${#header[@]} + 3 + ${1} + 1));$(((COLUMNS + (maximum_option_name_width + 9 + option_spacing)) / 2 - (5) / 2 - 1))H"
-		echo -en "\e[0;1;38;2;24;24;37m  \e[0;38;2;108;112;134;48;2;24;24;37m $shortcut \e[0;1;38;2;24;24;37m\e[0m"
+		echo -en "\e[0;1;38;2;24;24;37m  \e[0;38;2;108;112;134;48;2;24;24;37m ${shortcut} \e[0;1;38;2;24;24;37m\e[0m"
 	fi
 }
 
@@ -220,92 +220,104 @@ display_menu() {
 	echo -en "\e[$(((LINES - (${#header[@]} + 3 + ${#options[@]} / option_size + 2)) / 2 + ${#header[@]} + 3 + ${#options[@]} / option_size + 2));$(((COLUMNS - ${#footer} - 4) / 2 + 1))H\e[1;38;2;24;24;37m\e[0;38;2;108;112;134;48;2;24;24;37m ${footer} \e[0;1;38;2;24;24;37m\e[0m"
 }
 
-current=0
+#######################################
+# Run the command for the chosen option.
+# Globals:
+#   option_size
+#   index
+#   option_command_offset
+# Arguments:
+#		Index of the chosen option.
+#######################################
+choose_option() {
+	local index="${1}"
+
+	clear
+
+	# unhide cursor as the command might be interactive
+	echo -en "\e[?25h"
+
+	eval "${options[${option_size} * ${index} + ${option_command_offset}]}"
+
+	# rehide cursor
+	echo -en "\e[?25l"
+
+	display_menu
+}
+
+current_option=0
+
+redraw_needed=1
 
 # save screen contents
 echo -en "\e[?1049h"
 # show cursor and restore screen contents on exit
 trap "echo -en \"\e[?25h\e[?1049l\"; exit 0" EXIT INT
 
-# display menu on terminal size change
-trap "display_menu" WINCH
+# redraw on window size change
+trap 'redraw_needed=1' WINCH
 
 # hide the cursor
 echo -en "\e[?25l"
 
-display_menu
-
 # main loop
 while :; do
-	# get input
-	# https://sourceforge.net/p/playshell/code/ci/master/tree/source/keys.sh#l44
-	if read -rsn1 input && [ "${input}" = $'\e' ]; then
-		if read -rsn1 -t 0.01; then
-			input+="${REPLY}"
-			case "${REPLY}" in
-			"[")
-				while read -rsn1 -t 0.01 && [[ "${REPLY}" != [[:upper:]~] ]]; do
-					input+="${REPLY}"
-				done
-				input+="${REPLY}"
-				;;
-			"O")
-				if read -rsn1 -t 0.01; then
-					input+="${REPLY}"
-				fi
-				;;
-			esac
-		fi
+	if [ "${redraw_needed}" -eq 1 ]; then
+		display_menu
+		redraw_needed=0
 	fi
 
-	# handle input
-	# enter
-	if [ "${input}" = "" ]; then
-		clear
-
-		# unhide cursor
-		echo -en "\e[?25h"
-
-		eval "${options[$option_size * ${current} + $option_command_offset]}"
-
-		# rehide cursor
-		echo -en "\e[?25l"
-
-		display_menu
-	# up arrow
-	elif [ "${input}" = $'\e[A' ]; then
-		previous="${current}"
-		((current--))
-		if [ "${current}" -lt 0 ]; then
-			current="$((${#options[@]} / option_size - 1))"
-		fi
-		display_option "${previous}"
-		display_option "${current}"
-	# down arrow
-	elif [ "${input}" = $'\e[B' ]; then
-		previous="${current}"
-		((current++))
-		if [ "${current}" -eq "$((${#options[@]} / option_size))" ]; then
-			current=0
-		fi
-		display_option "${previous}"
-		display_option "${current}"
-	else
-		for ((i = 0; i < ${#options[@]} / option_size; i++)); do
-			shortcut="${options[$option_size * ${i} + $option_shortcut_offset]}"
-			if [ -n "${shortcut}" ] && [ "${input}" = "${shortcut}" ]; then
-				clear
-
-				# unhide cursor
-				echo -en "\e[?25h"
-
-				eval "${options[$option_size * ${i} + $option_command_offset]}"
-
-				# rehide cursor
-				echo -en "\e[?25l"
-
-				display_menu
+	# get input
+	# https://sourceforge.net/p/playshell/code/ci/master/tree/source/keys.sh#l44
+	if read -rsn1 -t 0.01 input; then
+		if [[ "${input}" = $'\e' ]]; then
+			if read -rsn1 -t 0.01; then
+				input+="${REPLY}"
+				case "${REPLY}" in
+				"[")
+					while read -rsn1 -t 0.01 && [[ "${REPLY}" != [[:upper:]~] ]]; do
+						input+="${REPLY}"
+					done
+					input+="${REPLY}"
+					;;
+				"O")
+					if read -rsn1 -t 0.01; then
+						input+="${REPLY}"
+					fi
+					;;
+				esac
 			fi
-		done
+		fi
+
+		# handle input
+		# enter
+		if [ "${input}" = "" ]; then
+			choose_option "${current_option}"
+		# up arrow
+		elif [ "${input}" = $'\e[A' ]; then
+			previous="${current_option}"
+			((current_option--))
+			if [ "${current_option}" -lt 0 ]; then
+				current_option="$((${#options[@]} / option_size - 1))"
+			fi
+			display_option "${previous}"
+			display_option "${current_option}"
+		# down arrow
+		elif [ "${input}" = $'\e[B' ]; then
+			previous="${current_option}"
+			((current_option++))
+			if [ "${current_option}" -eq "$((${#options[@]} / option_size))" ]; then
+				current_option=0
+			fi
+			display_option "${previous}"
+			display_option "${current_option}"
+		else
+			for ((i = 0; i < ${#options[@]} / option_size; i++)); do
+				shortcut="${options[${option_size} * ${i} + ${option_shortcut_offset}]}"
+				if [ -n "${shortcut}" ] && [ "${input}" = "${shortcut}" ]; then
+					choose_option "${i}"
+				fi
+			done
+		fi
 	fi
 done
