@@ -15,10 +15,10 @@ option_spacing=17
 
 # each option must be in the format: icon name command
 options=(
-	"󰣇" "" "Arch Terminal" "proot-distro login archlinux --user tarek --shared-tmp"
-	"" "" "Arch Desktop" "bash /data/data/com.termux/files/home/bin/termux-desktop"
-	"" "" "Arch Desktop VNC" "bash /data/data/com.termux/files/home/bin/termux-desktop-vnc"
-	"" "" "Terminal" "bash"
+	"󰣇" "a" "Arch Terminal" "proot-distro login archlinux --user tarek --shared-tmp"
+	"" "d" "Arch Desktop" "bash /data/data/com.termux/files/home/bin/termux-desktop"
+	"" "v" "Arch Desktop VNC" "bash /data/data/com.termux/files/home/bin/termux-desktop-vnc"
+	"" "t" "Terminal" "bash"
 )
 
 # add the exit option
