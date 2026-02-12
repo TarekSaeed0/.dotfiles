@@ -70,7 +70,7 @@ export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tool
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
 export ANDROID_AVD_HOME="$ANDROID_EMULATOR_HOME/avd"
-export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 "$ANDROID_HOME/ndk")"
+export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 "$ANDROID_HOME/ndk" 2>/dev/null)"
 if command -v adb &>/dev/null; then
 	alias adb="[ -d \"\$ANDROID_USER_HOME\" ] || mkdir -p \"\$ANDROID_USER_HOME\"; HOME=\"\$ANDROID_USER_HOME\" adb"
 fi
