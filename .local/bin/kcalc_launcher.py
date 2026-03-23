@@ -26,4 +26,5 @@ async def main():
     await asyncio.get_event_loop().create_future()
 
 
-asyncio.get_event_loop().run_until_complete(main())
+if __name__ == "__main__":
+    asyncio.run(main())
