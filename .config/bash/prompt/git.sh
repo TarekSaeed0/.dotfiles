@@ -12,7 +12,7 @@ export GIT_PS1_DESCRIBE_STYLE="branch"
 export GIT_PS1_SHOWUPSTREAM="auto git"
 
 __prompt_git() {
-	if git branch --no-color &>/dev/null; then
+	if [ -d .git ] || git rev-parse --git-dir &>/dev/null; then
 		echo -ne " \001\e[1D\002 $(__git_ps1 "%s") "
 	fi
 }
