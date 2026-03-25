@@ -29,7 +29,7 @@ __prompt_location() {
 	path="${path/#$HOME/\~}"
 	local parent=""
 	local name="${path##*/}"
-	if [[ -n "$name" ]] && [[ "$path" == *"$separator"* ]]; then
+	if ! [[ -z "$name" ]] && [[ "$path" == *"$separator"* ]]; then
 		parent="${path%"$separator"*}/"
 
 		if ((${#path} > maximum_length)); then
