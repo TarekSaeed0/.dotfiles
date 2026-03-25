@@ -14,6 +14,8 @@ __prompt_command() {
 	echo -ne "\e]0;$USER@${HOSTNAME%%.*}\a"
 	__prompt_timer_end
 
+	__prompt_git_update
+
 	PS1L=""
 	PS1L+="\[\e[1;38;2;203;166;247m\] \[\e[1D\]"
 	PS1L+="\[\e[38;2;24;24;37;48;2;203;166;247m\]  \[\e[1D\] \[\e[1m\]\u "
