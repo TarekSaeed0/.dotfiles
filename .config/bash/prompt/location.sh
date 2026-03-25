@@ -1,28 +1,32 @@
 #!/bin/bash
 
-__prompt_location() {
-	local path="${PWD/#$HOME/\~}"
-	local maximum_length="$(($(tput cols) / 4))"
+declare -A __PROMPT_LOCATION_ICONS=(
+	["default"]=""
+	["$HOME"]=""
+)
 
-	local icon=""
-	if [ "$path" = "~" ]; then
-		icon=""
-	elif command -v xdg-user-dir &>/dev/null; then
-		case "${path/#\~/$HOME}" in
-		"$(xdg-user-dir DESKTOP)") icon="󰍹" ;;
-		"$(xdg-user-dir DOWNLOAD)") icon="󰇚" ;;
-		"$(xdg-user-dir TEMPLATES)") icon="󰘓" ;;
-		"$(xdg-user-dir PUBLICSHARE)") icon="" ;;
-		"$(xdg-user-dir DOCUMENTS)") icon="" ;;
-		"$(xdg-user-dir MUSIC)") icon="" ;;
-		"$(xdg-user-dir PICTURES)") icon="" ;;
-		"$(xdg-user-dir VIDEOS)") icon="󰿎" ;;
-		esac
-	fi
+if command -v xdg-user-dir &>/dev/null; then
+	__PROMPT_LOCATION_ICONS["$(xdg-user-dir DESKTOP)"]="󰍹"
+	__PROMPT_LOCATION_ICONS["$(xdg-user-dir DOWNLOAD)"]="󰇚"
+	__PROMPT_LOCATION_ICONS["$(xdg-user-dir TEMPLATES)"]="󰘓"
+	__PROMPT_LOCATION_ICONS["$(xdg-user-dir PUBLICSHARE)"]=""
+	__PROMPT_LOCATION_ICONS["$(xdg-user-dir DOCUMENTS)"]=""
+	__PROMPT_LOCATION_ICONS["$(xdg-user-dir MUSIC)"]=""
+	__PROMPT_LOCATION_ICONS["$(xdg-user-dir PICTURES)"]=""
+	__PROMPT_LOCATION_ICONS["$(xdg-user-dir VIDEOS)"]="󰿎"
+fi
+
+__prompt_location() {
+	local maximum_length="$((COLUMNS / 4))"
+
+	local path="$PWD"
+
+	local icon="${__PROMPT_LOCATION_ICONS[$path]:-${__PROMPT_LOCATION_ICONS["default"]}}"
 
 	local separator="/"
 	local ellipsis="…"
 
+	path="${path/#$HOME/\~}"
 	if [[ $path =~ ^(.*$separator)([^$separator]+)$ ]]; then
 		parent="${BASH_REMATCH[1]}"
 		name="${BASH_REMATCH[2]}"
