@@ -28,13 +28,13 @@ __prompt_location() {
 
 	path="${path/#$HOME/\~}"
 	local parent=""
-	local name="${path##*/}"
+	local name="${path##*"$separator"}"
 	if [[ -n "$name" && "$path" == *"$separator"* ]]; then
-		parent="${path%"$separator"*}/"
+		parent="${path%"$separator"*}$separator"
 
 		if ((${#path} > maximum_length)); then
-			parent="${parent: -((maximum_length - ${#name}))}"
-			parent="$ellipsis/${parent#*"$separator"}"
+			parent="${parent: -((maximum_length - ${#ellipsis} - ${#separator} - ${#name}))}"
+			parent="$ellipsis$separator${parent#*"$separator"}"
 		fi
 	else
 		name="$path"
