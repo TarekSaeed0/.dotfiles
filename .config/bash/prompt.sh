@@ -2,9 +2,9 @@
 
 export __prompt_id="$USER.$BASHPID"
 
-for component in git location timer virtual_environment; do
-	if [ -r "$XDG_CONFIG_HOME/bash/prompt/${component}.sh" ]; then
-		. "$XDG_CONFIG_HOME/bash/prompt/${component}.sh"
+for prompt_component in git location timer virtual_environment; do
+	if [ -r "$XDG_CONFIG_HOME/bash/prompt/${prompt_component}.sh" ]; then
+		. "$XDG_CONFIG_HOME/bash/prompt/${prompt_component}.sh"
 	fi
 done
 
