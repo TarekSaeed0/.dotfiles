@@ -1,0 +1,48 @@
+[core]
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+		features = theme
+    navigate = true
+		side-by-side = true
+[merge]
+    conflictStyle = zdiff3
+
+[delta "theme"]
+    dark = true
+    commit-decoration-style = "#6c7086" "#181825" box ul
+    file-added-label = [+]
+    file-copied-label = [==]
+    file-modified-label = [*]
+    file-removed-label = [-]
+    file-renamed-label = [->]
+    file-style = omit
+    hunk-header-decoration-style = "#6c7086" "#181825" box ul
+    hunk-header-file-style = "#94e2d5" "#181825" ul
+    hunk-header-line-number-style = normal "#181825" box bold
+    hunk-header-style = file line-number syntax "#181825" bold italic
+    plus-style = syntax "#364144" 
+    plus-emph-style = black green
+    minus-style = syntax "#443245" 
+    minus-emph-style = black red
+    line-numbers = true
+    line-numbers-minus-style = brightred "#181825"
+    line-numbers-plus-style = brightgreen "#181825"
+    line-numbers-left-format = " {nm:>3} │"
+    line-numbers-left-style = "#6c7086" "#181825"
+    line-numbers-right-format = "│ {np:>3} │"
+    line-numbers-right-style = "#6c7086" "#181825"
+    line-numbers-zero-style = "#6c7086" "#181825"
+    zero-style = syntax
+    whitespace-error-style = black bold
+    blame-code-style = syntax
+    blame-format = "{author:<18} {commit:<6} {timestamp:<15}"
+    blame-palette = "#45475a" "#585b70" "#6c7086"
+    merge-conflict-begin-symbol = ~
+    merge-conflict-end-symbol = ~
+    merge-conflict-ours-diff-header-style = yellow bold
+    merge-conflict-ours-diff-header-decoration-style = "#6c7086" box
+    merge-conflict-theirs-diff-header-style = yellow bold
+    merge-conflict-theirs-diff-header-decoration-style = "#6c7086" box
+		syntax-theme = Catppuccin Mocha
