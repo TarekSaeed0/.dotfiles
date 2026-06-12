@@ -18,6 +18,7 @@ bindkey -e
 # Options
 
 setopt extendedglob
+setopt autocd
 
 # Completions
 

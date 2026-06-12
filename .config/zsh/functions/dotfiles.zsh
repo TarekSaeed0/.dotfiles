@@ -16,5 +16,5 @@ if (( $+commands[git] )); then
 	}
 
   autoload -Uz _git
-	compdef _git dotfiles
+	compdef '_dispatch git git' dotfiles
 fi
