@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/zsh
 
 cat() {
-	if command -v bat &>/dev/null; then
+	if (( $+commands[bat] )); then
 		bat -P "$@"
 	else
 		command cat "$@"

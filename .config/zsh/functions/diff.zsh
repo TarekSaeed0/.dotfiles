@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/zsh
 
 diff() {
-	if command -v delta &>/dev/null; then
+	if (( $+commands[delta] )); then
 		delta "$@"
 	else
 		command diff "$@"

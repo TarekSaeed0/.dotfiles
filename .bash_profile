@@ -53,8 +53,24 @@ if command -v python &>/dev/null; then
 	export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 fi
 
+if command -v java &>/dev/null; then
+	export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=${XDG_CONFIG_HOME}/java -Djavafx.cachedir=${XDG_CACHE_HOME}/openjfx"
+fi
+
+if command -v maven &>/dev/null; then
+	export MAVEN_OPTS="-Dmaven.repo.local=$XDG_CACHE_HOME/maven/repository"
+	export MAVEN_ARGS="--settings $XDG_CONFIG_HOME/maven/settings.xml"
+fi
+
+export KERAS_HOME="${XDG_STATE_HOME}/keras"
+
 if command -v flutter &>/dev/null; then
 	export FLUTTER_ROOT="/usr/lib/flutter"
+fi
+
+if command -v fvm &>/dev/null; then
+	export FVM_CACHE_PATH="$XDG_CACHE_HOME/fvm"
+	export FVM_USE_GIT_CACHE="false"
 fi
 
 if command -v iceauth &>/dev/null; then
@@ -160,6 +176,10 @@ fi
 if command -v wine &>/dev/null; then
 	[ -d "$XDG_DATA_HOME/wineprefixes" ] || mkdir -p "$XDG_DATA_HOME/wineprefixes"
 	export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
+fi
+
+if command -v docker &>/dev/null; then
+	export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 fi
 
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
