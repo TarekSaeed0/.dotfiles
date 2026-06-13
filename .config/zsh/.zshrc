@@ -55,6 +55,9 @@ autoload -Uz down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
+bindkey '^[[A'  up-line-or-beginning-search
+bindkey '^[[B'  down-line-or-beginning-search
+
 [[ -n "${key[Home]}"          ]] && bindkey -- "${key[Home]}"           beginning-of-line
 [[ -n "${key[End]}"           ]] && bindkey -- "${key[End]}"            end-of-line
 [[ -n "${key[Insert]}"        ]] && bindkey -- "${key[Insert]}"         overwrite-mode
