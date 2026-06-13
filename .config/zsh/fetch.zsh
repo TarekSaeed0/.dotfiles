@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 if (( $+commands[neofetch] )) && [[ "$TERM_PROGRAM" != "vscode" ]]; then
 	__fetch_id="$USER"
 	if [[ ! -f "${TMPDIR:-/tmp}/__fetch.$__fetch_id" ]]; then

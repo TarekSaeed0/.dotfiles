@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 tabs -4
 
 if (( $+commands[fzf] )); then

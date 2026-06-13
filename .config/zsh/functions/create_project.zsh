@@ -1,11 +1,11 @@
 #!/bin/zsh
 
 if (( $+commands[nvim] )); then
-  create_project() {
+	function create_project() {
     nvim --headless +"CreateProject $*" +qa
   }
 
-  _create_project() {
+	function _create_project() {
     local templates_directory="$XDG_CONFIG_HOME/nvim/templates"
     local -a templates
     if [[ -d "$templates_directory" ]]; then

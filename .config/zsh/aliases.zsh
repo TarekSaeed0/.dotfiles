@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 alias mv="mv -i"
 alias cp="cp -i"
 alias rm="rm -i"
@@ -21,9 +19,10 @@ if (( $+commands[dircolors] )); then
 	alias egrep="egrep --color=auto"
 fi
 
-alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
 
 if [[ -n "$NVIM" ]]; then
 	if (( $+commands[nvr] )); then

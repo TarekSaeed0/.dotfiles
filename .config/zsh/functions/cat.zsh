@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-cat() {
+function cat() {
 	if (( $+commands[bat] )); then
 		bat -P "$@"
 	else

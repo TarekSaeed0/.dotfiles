@@ -6,7 +6,7 @@ setopt PUSHD_IGNORE_DUPS
 setopt PUSHD_MINUS
 setopt PUSHD_SILENT
 
-cd() {
+function cd() {
   if [[ "$1" == "--" ]]; then
     dirs -v
     return 0

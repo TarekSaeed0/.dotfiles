@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-loadenv() {
+function loadenv() {
 	local file="${1:-.env}"
 	if [[ ! -f "$file" ]]; then
 		echo "No such file: $file"

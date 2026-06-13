@@ -2,7 +2,7 @@
 
 # retry command until it succeeds
 
-retry() {
+function retry() {
 	while :; do
 		"$@"
 		local status=$?

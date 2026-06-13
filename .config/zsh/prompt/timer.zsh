@@ -1,17 +1,15 @@
-#!/bin/zsh
-
 zmodload zsh/datetime
 zmodload zsh/mathfunc
 
-__prompt_timer_get_time() {
+function __prompt_timer_get_time() {
 	echo $EPOCHREALTIME
 }
 
-__prompt_timer_preexec() {
+function __prompt_timer_preexec() {
 	__prompt_timer_start_time=$(__prompt_timer_get_time)
 }
 
-__prompt_timer_precmd() {
+function __prompt_timer_precmd() {
 	unset __prompt_timer_duration
 	if [[ -n "$__prompt_timer_start_time" ]]; then
 		__prompt_timer_duration=$(( $(__prompt_timer_get_time) - __prompt_timer_start_time ))
@@ -20,7 +18,7 @@ __prompt_timer_precmd() {
 	fi
 }
 
-__prompt_timer_format() {
+function __prompt_timer_format() {
 	float duration="${1:-0}"
 	local time=""
 	
@@ -46,7 +44,7 @@ __prompt_timer_format() {
 	echo "${time%% }"
 }
 
-__prompt_timer() {
+function __prompt_timer() {
 	if [[ -n "$__prompt_timer_duration" ]]; then
 		local formatted_time=$(__prompt_timer_format "$__prompt_timer_duration")
 		print "${formatted_time}  "

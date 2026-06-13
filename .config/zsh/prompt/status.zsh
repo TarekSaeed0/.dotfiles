@@ -1,6 +1,4 @@
-#!/bin/zsh
-
-__prompt_status_precmd() {
+function __prompt_status_precmd() {
 	__prompt_status_exit_code="$?"
 }
 

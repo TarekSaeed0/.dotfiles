@@ -3,7 +3,7 @@
 # command for managing dot files
 
 if (( $+commands[git] )); then
-	dotfiles() {
+	function dotfiles() {
 		if [[ -d "$HOME/.dotfiles/" ]]; then
 			git -C "$HOME/.dotfiles/" rev-parse --is-inside-git-dir &>/dev/null || return 1
 		else

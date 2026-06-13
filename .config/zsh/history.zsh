@@ -1,0 +1,12 @@
+if [ ! -d "$XDG_STATE_HOME/zsh" ]; then
+	mkdir -p "$XDG_STATE_HOME/zsh"
+fi
+
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+HISTSIZE=20000
+SAVEHIST=10000
+
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY

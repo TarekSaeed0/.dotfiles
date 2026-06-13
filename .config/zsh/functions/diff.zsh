@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-diff() {
+function diff() {
 	if (( $+commands[delta] )); then
 		delta "$@"
 	else

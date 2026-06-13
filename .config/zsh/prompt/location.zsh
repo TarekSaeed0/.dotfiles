@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 typeset -A __prompt_location_icons=(
 	[default]=""
 	[$HOME]=""
@@ -27,27 +25,28 @@ if (( $+commands[xdg-user-dir] )); then
 	)
 fi
 
-__prompt_location() {
+function __prompt_location() {
 	local maximum_length=$(( COLUMNS / 4 ))
-	local path="$PWD"
+
+	local location="$PWD"
 	
-	local icon="${__prompt_location_icons[$path]:-${__prompt_location_icons[default]}}"
+	local icon="${__prompt_location_icons[$location]:-${__prompt_location_icons[default]}}"
 	
 	local separator="/"
 	local ellipsis="…"
 
-	path="${path/#$HOME/\~}"
+	location="${location/#$HOME/~}"
 	local parent=""
-	local name="${path##*$separator}"
-	if [[ -n "$name" && "$path" == *"$separator"* ]]; then
-		parent="${path%$separator*}$separator"
-		
-		if (( ${#path} > maximum_length )); then
-			parent="${parent: -(( maximum_length - ${#ellipsis} - ${#separator} - ${#name} ))}"
+	local name="${location##*$separator}"
+	if [[ -n "$name" && "$location" == *"$separator"* ]]; then
+		parent="${location%$separator*}$separator"
+
+		if (( ${#location} > maximum_length )); then
+			parent="${parent[-(( maximum_length - ${#ellipsis} - ${#separator} - ${#name} )),-1]}"
 			parent="$ellipsis$separator${parent#*$separator}"
 		fi
 	else
-		name="$path"
+		name="$location"
 	fi
 	
 	print " $icon $parent%f%B$name%b%F{#6c7086} "
