@@ -1,4 +1,4 @@
-for function_component in cd ls cat diff retry dotfiles create_project; do
+for function_component in cd ls cat diff retry dotfiles create_project loadenv; do
 	if [[ -r "$ZDOTDIR/functions/${function_component}.zsh" ]]; then
 		source "$ZDOTDIR/functions/${function_component}.zsh"
 	fi
