@@ -9,3 +9,9 @@ function retry() {
 		fi
 	done
 }
+
+function _retry() {
+	_arguments '*::commands: _normal'
+}
+
+compdef _retry retry
