@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 if (( $+commands[exa] )); then
 	EXA_COLORS="da=38;2;137;220;235:"
 

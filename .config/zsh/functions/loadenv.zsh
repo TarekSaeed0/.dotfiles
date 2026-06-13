@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 function loadenv() {
 	local file="${1:-.env}"
 	if [[ ! -f "$file" ]]; then

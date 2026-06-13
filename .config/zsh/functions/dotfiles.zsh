@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 # command for managing dot files
 
 if (( $+commands[git] )); then
@@ -15,6 +13,14 @@ if (( $+commands[git] )); then
 		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
 	}
 
-  autoload -Uz _git
-	compdef '_dispatch git git' dotfiles
+	autoload -Uz _git
+
+	function _dotfiles() {
+		local -x GIT_DIR="$HOME/.dotfiles/"
+		local -x GIT_WORK_TREE="$HOME"
+		local service=git
+		_git
+	}
+
+	compdef _dotfiles dotfiles
 fi

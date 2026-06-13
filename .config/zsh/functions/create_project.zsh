@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 if (( $+commands[nvim] )); then
 	function create_project() {
     nvim --headless +"CreateProject $*" +qa

@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 setopt AUTO_PUSHD
 setopt CD_SILENT
 setopt PUSHD_IGNORE_DUPS

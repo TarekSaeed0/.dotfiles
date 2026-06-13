@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 # retry command until it succeeds
 
 function retry() {
