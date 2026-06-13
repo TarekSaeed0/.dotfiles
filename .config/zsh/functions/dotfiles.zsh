@@ -13,13 +13,10 @@ if (( $+commands[git] )); then
 		git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
 	}
 
-	autoload -Uz _git
-
 	function _dotfiles() {
 		local -x GIT_DIR="$HOME/.dotfiles/"
 		local -x GIT_WORK_TREE="$HOME"
-		local service=git
-		_git
+		_dispatch git git 
 	}
 
 	compdef _dotfiles dotfiles
