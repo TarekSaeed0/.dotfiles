@@ -37,7 +37,7 @@ fi
 
 export XCURSOR_SIZE=24
 
-for shell_component in history key_bindings completion multiplexer functions aliases misc prompt; do
+for shell_component in history key-bindings completion multiplexer functions aliases misc prompt; do
 	if [[ -r "$ZDOTDIR/$shell_component.zsh" ]]; then
 		source "$ZDOTDIR/$shell_component.zsh"
 	fi

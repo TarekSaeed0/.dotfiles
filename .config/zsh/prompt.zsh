@@ -2,7 +2,7 @@ setopt PROMPT_SUBST
 
 ZLE_RPROMPT_INDENT=0
 
-for prompt_component in git location virtual_environment status timer; do
+for prompt_component in git location virtual-environment status timer; do
 	if [[ -r "$ZDOTDIR/prompt/${prompt_component}.zsh" ]]; then
 		source "$ZDOTDIR/prompt/${prompt_component}.zsh"
 	fi

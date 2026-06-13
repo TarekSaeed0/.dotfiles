@@ -1,5 +1,5 @@
 if (( $+commands[nvim] )); then
-	function create_project() {
+	function create-project() {
     nvim --headless +"CreateProject $*" +qa
   }
 
@@ -17,5 +17,5 @@ if (( $+commands[nvim] )); then
     fi
   }
 
-  compdef _create_project create_project
+  compdef _create_project create-project
 fi  
