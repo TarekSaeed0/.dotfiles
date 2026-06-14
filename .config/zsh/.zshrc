@@ -3,12 +3,6 @@
 setopt EXTENDED_GLOB
 setopt AUTO_CD
 
-# Suggestions
-
-if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
-
 # Editor
 
 if (( $+commands[nvim] )); then
@@ -37,11 +31,21 @@ fi
 
 export XCURSOR_SIZE=24
 
+# Load components
+
 for shell_component in history key-bindings completion multiplexer functions aliases misc prompt; do
 	if [[ -r "$ZDOTDIR/$shell_component.zsh" ]]; then
 		source "$ZDOTDIR/$shell_component.zsh"
 	fi
 done
+
+# Suggestions
+
+if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# Syntax Highlighting
 
 if [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
 	source "$ZDOTDIR/themes/catppuccin-mocha-zsh-syntax-highlighting.zsh"

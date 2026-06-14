@@ -13,6 +13,7 @@ PROMPT='\
 %F{#181825}%K{#cba6f7}  %B%n \
 %F{#cba6f7}%K{#181825}\
 %b%F{#6c7086}\
+$(__prompt_git)\
 $(__prompt_location)\
 $(__prompt_virtual_environment)\
 %k%B%F{#181825}\
