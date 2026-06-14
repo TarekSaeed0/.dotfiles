@@ -17,28 +17,28 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-upstream git-stash
 
 function +vi-git-untracked() {
 	if [[ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]]; then
-			hook_com[unstaged]+='%%'
+		hook_com[unstaged]+='%%'
 	fi
 }
 
-function +vi-git-uptsream() {
+function +vi-git-upstream() {
 	local ahead=$(git rev-list --count "@{upstream}..HEAD" 2>/dev/null)
 	local behind=$(git rev-list --count "HEAD..@{upstream}" 2>/dev/null)
 
 	if [[ "$ahead" -gt 0 && "$behind" -gt 0 ]]; then
-			hook_com[misc]+='<>'
+		hook_com[misc]+='<>'
 	elif [[ "$ahead" -gt 0 ]]; then
-			hook_com[misc]+='>'
+		hook_com[misc]+='>'
 	elif [[ "$behind" -gt 0 ]]; then
-			hook_com[misc]+='<'
+		hook_com[misc]+='<'
 	elif git rev-parse @{upstream} &>/dev/null; then
-			hook_com[misc]+='='
+		hook_com[misc]+='='
 	fi
 }
 
 function +vi-git-stash() {
 	if git rev-parse --verify refs/stash &>/dev/null; then
-			hook_com[misc]+='$'
+		hook_com[misc]+='$'
 	fi
 }
 
