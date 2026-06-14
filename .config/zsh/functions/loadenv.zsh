@@ -1,7 +1,9 @@
+# load environment variables from a .env file or any specified file
+
 function loadenv() {
 	local file="${1:-.env}"
 	if [[ ! -f "$file" ]]; then
-		echo "No such file: $file"
+		echo "No such file: $file" >&2
 		return 1
 	fi
 

@@ -1,3 +1,5 @@
+# create a project from a template using the CreateProject command defined in the neovim configuration
+
 if (( $+commands[nvim] )); then
 	function create-project() {
     nvim --headless +"CreateProject $*" +qa

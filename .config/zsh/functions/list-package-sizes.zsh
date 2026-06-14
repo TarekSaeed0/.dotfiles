@@ -1,4 +1,4 @@
-# command for listing explicitly installed packages and their sizes, sorted by size
+# list explicitly installed packages and their sizes, sorted by size
 
 if (( $+commands[pacman] )); then
 	function list-package-sizes() {

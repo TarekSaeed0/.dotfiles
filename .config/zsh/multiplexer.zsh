@@ -1,4 +1,4 @@
-if (( $+commands[tmux] )) && [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "vscode" ]]; then
+if [[ -z "$TMUX" ]] && (( $+commands[tmux] )) && [[ "$TERM_PROGRAM" != "vscode" ]]; then
 	# FIX: running this on termux makes tmux give an error
 	if ! (( $+commands[termux-setup-storage] )); then
 		session="$(tmux list-sessions -F \

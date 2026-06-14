@@ -1,4 +1,4 @@
-# command for managing dot files
+# manage dotfiles with git
 
 if (( $+commands[git] )); then
 	function dotfiles() {
